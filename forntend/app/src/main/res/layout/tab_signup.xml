@@ -1,0 +1,72 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_kind"
+    android:layout_width="350dp"
+    android:layout_height="530dp"
+    android:layout_centerHorizontal="true"
+    android:background="@android:color/transparent"
+
+    tools:context=".Signup">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/User_name_box"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/box"
+            android:ems="10"
+
+            android:hint="User Name"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:id="@+id/password_box"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/box"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingLeft="10dp"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/User_name_box" />
+
+        <EditText
+            android:id="@+id/Email_box"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/password_box"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/box"
+            android:ems="10"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="10dp"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/signup_button"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_box"
+            android:text="Sign up"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:layout_below="@+id/Email_box" />
+
+    </RelativeLayout>
+</ScrollView>

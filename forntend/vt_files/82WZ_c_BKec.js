@@ -1,0 +1,6 @@
+/*!CK:2983514734!*//*1452511395,*/
+
+if (self.CavalryLogger) { CavalryLogger.start_js(["XymPe"]); }
+
+__d("XLtgPostTranslationController",["XController"],function a(b,c,d,e,f,g){c.__markCompiled&&c.__markCompiled();f.exports=c("XController").create("\/intl\/see_translation\/",{ftid:{type:"String",required:true},text_size:{type:"Enum",defaultValue:"medium",enumType:1}});},null);
+__d('LtgPostTranslation',['Arbiter','AsyncRequest','ContentTranslationStrings','cx','DOM','Event','highlight','LoadingIndicator.react','React','ReactDOM','UFIUIEvents','XLtgPostTranslationController'],function a(b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s){if(c.__markCompiled)c.__markCompiled();function t(v,w){var x=l.create('div',{'class':"_49k0"},w||j.NO_TRANSLATION_AVAILABLE);l.replace(v,x);if(w)n(x);}var u={bindListener:function(v,w){m.listen(v,'click',function(event){event.prevent();q.render(p.createElement(o,{size:'small',color:'white'}),v);var x=s.getURIBuilder().setString('ftid',w).getURI();new i().setURI(x).setHandler(function(y){var z=y.getPayload();t(v,z&&z.text);h.inform(r.TranslationRendered);}).setErrorHandler(function(){t(v,null);}).send();});}};f.exports=u;},null);
