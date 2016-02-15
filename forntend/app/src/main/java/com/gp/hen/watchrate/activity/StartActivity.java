@@ -23,6 +23,7 @@ import org.json.simple.parser.ParseException;
 
 
 public class StartActivity extends Activity {
+    public String Url ;
 
 
     Button signup, login, sign_in;
@@ -39,6 +40,10 @@ public class StartActivity extends Activity {
         setContentView(R.layout.activity_login_signup);
         ActionBar ab = getActionBar();
            ab.hide();
+
+        // Url="http://10.0.3.2:8080/";
+        Url ="http://192.168.1.6:8080/";
+
         logo = (ImageView) findViewById(R.id.logo);
         signup = (Button) findViewById(R.id.sign_up_button);
         sign_in = (Button) findViewById(R.id.sign_in_button);
@@ -79,7 +84,7 @@ public class StartActivity extends Activity {
                             jobj.put("pass", pass.getText().toString());
 
                             conn.data = "data=" + jobj.toString();
-                            conn.execute("http://10.0.3.2:8080/Watch_and_Rate/Sign_up");
+                            conn.execute(Url+"Watch_and_Rate/Sign_up");
                         }
                     }
                 });
@@ -104,6 +109,9 @@ public class StartActivity extends Activity {
                 forget.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Intent intent = new Intent(StartActivity.this, home.class);
+                        finish();
+                        startActivity(intent);
                     }
                 });
                 final EditText email = (EditText) tab_login.findViewById(R.id.email_login);
@@ -124,7 +132,7 @@ public class StartActivity extends Activity {
                             jobj.put("pass", pass.getText().toString());
 
                             conn.data = "data=" + jobj.toString();
-                            conn.execute("http://10.0.3.2:8080/Watch_and_Rate/Sign_in");
+                            conn.execute(Url+"Watch_and_Rate/Sign_in");
                         }
 
                     }

@@ -27,7 +27,7 @@ public class LoadImage extends AsyncTask<String, String, Bitmap> {
 
     protected Bitmap doInBackground(String... args) {
         try {
-            if (!args[0].equals("http://hosamazzam.0fees.net/Blog_db_online/User_image/none")) {
+            if (!args[0].equals("http://image.tmdb.org/t/p/w300null")) {
                 bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
             }
 

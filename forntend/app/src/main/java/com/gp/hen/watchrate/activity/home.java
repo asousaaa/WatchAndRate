@@ -11,6 +11,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,7 +35,9 @@ import org.json.simple.parser.ParseException;
  * Created by esraa ahmed on 11/30/2015.
  */
 public class home extends Activity {
-    RelativeLayout search_content;
+    //nyt api=key = 28bcb54b06ae2bb40882d7a5e5dba212:4:74287520
+    //http://api.nytimes.com/svc/movies/v2/reviews/?query=taken+3&api-key=28bcb54b06ae2bb40882d7a5e5dba212:4:74287520picks.xmls
+    LinearLayout search_content;
     LinearLayout list_View;
     LayoutInflater layoutInflater;
     View search_card;
@@ -48,6 +51,8 @@ public class home extends Activity {
         System.out.println(user.getName() + " " + user.getEmail());
         //http://image.tmdb.org/t/p/w300/hO1R1TI429PjkOjby4dTPBrWFwn.jpg
         //http://api.themoviedb.org/3/movie/260346?api_key=23386b0753dd348bcb87ab9f516da5d5
+        //The reviews api key (NYT API)
+      //  28bcb54b06ae2bb40882d7a5e5dba212:4:74287520
 
         Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
@@ -65,8 +70,10 @@ public class home extends Activity {
          search_card = layoutInflater.inflate(R.layout.search_card, null);
 
         list_View = (LinearLayout) findViewById(R.id.searchlistView);
-        search_content = (RelativeLayout) findViewById(R.id.search_table);
+        search_content = (LinearLayout) findViewById(R.id.search_table);
         ImageButton search_btn = (ImageButton) findViewById(R.id.search_btn);
+        Button Search_info_btn = (Button) findViewById(R.id.Search_info_btn);
+        Button Reviews_btn = (Button) findViewById(R.id.Reviews_btn);
         final EditText search_box = (EditText) findViewById(R.id.search_box);
         search_content.setAnimation(animation);
         search_btn.setOnClickListener(new View.OnClickListener() {
@@ -78,10 +85,28 @@ public class home extends Activity {
                 Connect conn = new Connect();
                 conn.tag = "api";
                 String query = "http://api.themoviedb.org/3/search/movie?api_key=23386b0753dd348bcb87ab9f516da5d5&query=" + search_box.getText().toString();
-               query = query.replaceAll(" ","%20");
+                query = query.replaceAll(" ", "%20");
                 conn.execute(query);
+
+
             }
         });
+        Search_info_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                list_View.removeAllViews();
+                search_content.setVisibility(View.VISIBLE);
+                Connect conn = new Connect();
+                conn.tag = "api";
+                String query = "http://api.themoviedb.org/3/search/movie?api_key=23386b0753dd348bcb87ab9f516da5d5&query=" + search_box.getText().toString();
+                query = query.replaceAll(" ", "%20");
+                conn.execute(query);
+
+
+            }
+        });
+
 
 
     }

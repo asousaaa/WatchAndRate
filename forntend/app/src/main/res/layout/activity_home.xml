@@ -70,20 +70,24 @@
             android:layout_toStartOf="@+id/relativeLayout">
             <EditText
                 android:id="@+id/search_box"
-                android:layout_width="260dp"
-                android:layout_height="30dp"
+                android:minWidth="220dp"
+                android:maxWidth="983px"
+                android:layout_width="wrap_content"
+                android:layout_height="33dp"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
+                android:maxLines="1"
                 android:background="@drawable/box"
                 android:ems="10"
                 android:hint="Search"
                 android:inputType="text"
+                android:paddingRight="30dp"
                 android:paddingLeft="10dp"
                 android:textColor="#ffffff" />
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_alignParentRight="true"
                 android:id="@+id/search_btn"
@@ -95,16 +99,56 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:visibility="gone"
         android:id="@+id/search_table"
         android:background="#7e008138"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#008138"
+            android:gravity="center_horizontal|center_vertical"
+            android:id="@+id/header"
+
+            >
+            <Button
+                android:id="@+id/Search_info_btn"
+                android:layout_width="150dp"
+                android:layout_height="33dp"
+                android:text="Movies "
+                android:textColor="#ffffff"
+                android:textAllCaps="false"
+
+                android:background="@drawable/button_box"
+                android:layout_below="@+id/login_button"
+                android:layout_alignLeft="@+id/login_button"
+                android:layout_alignStart="@+id/login_button" />
+
+            <Button
+                android:id="@+id/Reviews_btn"
+                android:layout_width="150dp"
+                android:layout_height="33dp"
+                android:text="Reviews "
+                android:textColor="#ffffff"
+                android:textAllCaps="false"
+               android:layout_marginLeft="10dp"
+                android:background="@drawable/button_box"
+                android:layout_below="@+id/login_button"
+                 />
+        </LinearLayout>
+
 <ScrollView
+
     android:layout_width="match_parent"
     android:id="@+id/lsearch_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@+id/header"
+    >
+
 
     <LinearLayout
         android:id="@+id/searchlistView"
@@ -116,6 +160,6 @@
 </ScrollView>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
