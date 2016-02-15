@@ -49,7 +49,7 @@ public class StartActivity extends Activity {
             public void onClick(View v) {
                 list.removeAllViews();
                 sign_in.setText("Login");
-                logo.setBackground(getResources().getDrawable(R.drawable.logo_no_titel));
+                logo.setBackground(getResources().getDrawable(R.drawable.logo3));
                 signup.setBackground(getResources().getDrawable(R.drawable.tab_box));
                 sign_in.setBackground(getResources().getDrawable(R.drawable.button_box));
 
@@ -92,7 +92,7 @@ public class StartActivity extends Activity {
             public void onClick(View v) {
                 list.removeAllViews();
                 sign_in.setText("Sign in");
-                logo.setBackground(getResources().getDrawable(R.drawable.logo));
+                logo.setBackground(getResources().getDrawable(R.drawable.logo3));
                 signup.setBackground(getResources().getDrawable(R.drawable.button_box));
                 sign_in.setBackground(getResources().getDrawable(R.drawable.tab_box));
 
@@ -162,7 +162,7 @@ public class StartActivity extends Activity {
                     UserEntity activeuser= UserEntity.getCurrentUser();
                     activeuser.setCurrentUser(object);
                     Intent intent = new Intent(StartActivity.this, home.class);
-                    finish();
+                  //  finish();
                     startActivity(intent);
 
                 }

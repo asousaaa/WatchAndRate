@@ -35,7 +35,7 @@ public class Connection {
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();
-
+            System.out.println(urls);
             // Get the server response
 
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -52,11 +52,13 @@ public class Connection {
             // Append Server Response To Content String
 
         } catch (Exception ex) {
+            ex.printStackTrace();
         } finally {
             try {
 
                 reader.close();
             } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
         return result;

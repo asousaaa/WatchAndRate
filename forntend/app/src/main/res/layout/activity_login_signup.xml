@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="5dp"
         android:id="@+id/logo"
-        android:background="@drawable/logo"
+        android:background="@drawable/logo3"
         android:scaleType="centerInside" />
 
     <LinearLayout

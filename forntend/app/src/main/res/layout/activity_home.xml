@@ -1,30 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#ffc4c4c4"
 
-android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <RelativeLayout
-    android:layout_width="match_parent"
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_height="100dp"
-    android:background="#ff008138">
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#ff008138"
+        >
 
-        <EditText
-            android:id="@+id/email_login"
-            android:layout_width="260dp"
-            android:layout_height="40dp"
-            android:background="@drawable/box"
-            android:paddingLeft="10dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:ems="10"
-            android:textColor="#ffffff"
-            android:hint="Search"
-            android:inputType="textEmailAddress" />
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/menu_btn"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_action_editor_format_list_bulleted"
+            />
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="50dp"
+            android:id="@+id/relativeLayout">
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"
+                android:src="@drawable/notify"
+                />
+            <ImageView
+                android:layout_width="20dp"
+                android:background="@drawable/count"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:gravity="center"
+                android:text="4"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="2dp"
+                android:id="@+id/count"
+                android:textColor="#ffffff"
+                android:layout_marginRight="2dp"
+                android:layout_height="wrap_content"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="40dp"
+            android:layout_centerVertical="true"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:layout_toLeftOf="@+id/relativeLayout"
+            android:layout_toStartOf="@+id/relativeLayout">
+            <EditText
+                android:id="@+id/search_box"
+                android:layout_width="260dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/box"
+                android:ems="10"
+                android:hint="Search"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColor="#ffffff" />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:layout_marginRight="12dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/search_btn"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_action_action_search"
+                />
+
+        </RelativeLayout>
 
     </RelativeLayout>
-    
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:id="@+id/search_table"
+        android:background="#7e008138"
+        android:layout_height="match_parent">
+<ScrollView
+    android:layout_width="match_parent"
+    android:id="@+id/lsearch_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/searchlistView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        />
+</ScrollView>
+
+
+    </RelativeLayout>
+
 </LinearLayout>

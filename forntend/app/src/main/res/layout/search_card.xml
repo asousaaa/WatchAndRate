@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/movie_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/no_image" />
+
+    <TextView
+        android:id="@+id/movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/movie_img"
+        android:layout_margin="5dp"
+        android:layout_toEndOf="@+id/movie_img"
+        android:layout_toRightOf="@+id/movie_img"
+        android:text="Movie_name"
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/movie_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/movie_title"
+        android:layout_marginLeft="5dp"
+
+        android:layout_toEndOf="@+id/movie_img"
+        android:layout_toRightOf="@+id/movie_img"
+        android:text="Year "
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:id="@+id/vote_count"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:text="vote : 1207"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:layout_alignTop="@+id/vote_avg"
+        android:layout_toRightOf="@+id/movie_img"
+        android:layout_toEndOf="@+id/movie_img" />
+
+
+    <TextView
+        android:id="@+id/vote_avg"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:paddingTop="5dp"
+
+        android:text="average : 5.5"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:layout_above="@+id/imageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/movie_img"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/line_white"
+        android:id="@+id/imageView" />
+
+</RelativeLayout>
