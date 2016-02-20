@@ -41,9 +41,9 @@ public class StartActivity extends Activity {
         ActionBar ab = getActionBar();
            ab.hide();
 
-        // Url="http://10.0.3.2:8080/";
-        Url ="http://192.168.1.6:8080/";
-
+        // Url="http://10.0.3.2:8080/Watch_and_Rate";
+//        Url ="http://192.168.1.6:8080/Watch_and_Rate";
+        Url = "http://watchandrate-fcigp.rhcloud.com";
         logo = (ImageView) findViewById(R.id.logo);
         signup = (Button) findViewById(R.id.sign_up_button);
         sign_in = (Button) findViewById(R.id.sign_in_button);
@@ -77,6 +77,7 @@ public class StartActivity extends Activity {
                             Toast.makeText(getApplicationContext(), "Please fill all boxes", Toast.LENGTH_SHORT).show();
                         } else {
                             Connect conn = new Connect();
+
                             JSONObject jobj = new JSONObject();
 
                             jobj.put("username", fname.getText().toString());
@@ -84,7 +85,8 @@ public class StartActivity extends Activity {
                             jobj.put("pass", pass.getText().toString());
 
                             conn.data = "data=" + jobj.toString();
-                            conn.execute(Url+"Watch_and_Rate/Sign_up");
+                            System.out.println(conn.data);
+                            conn.execute(Url+"/Sign_up");
                         }
                     }
                 });
@@ -132,7 +134,7 @@ public class StartActivity extends Activity {
                             jobj.put("pass", pass.getText().toString());
 
                             conn.data = "data=" + jobj.toString();
-                            conn.execute(Url+"Watch_and_Rate/Sign_in");
+                            conn.execute(Url+"/Sign_in");
                         }
 
                     }
@@ -147,7 +149,6 @@ public class StartActivity extends Activity {
         String result, data = "";
 
         protected Void doInBackground(String... strings) {
-            //   System.out.println("dfklsdk;sd");
             result = new Connection().sendrequest(strings[0], data);
             return null;
         }
@@ -178,6 +179,7 @@ public class StartActivity extends Activity {
                     Toast.makeText(getApplicationContext(), object.get("status").toString(), Toast.LENGTH_SHORT).show();
                 }
             } catch (ParseException e) {
+                Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
 
             }

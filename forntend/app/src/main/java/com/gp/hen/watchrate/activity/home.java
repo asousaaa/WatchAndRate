@@ -2,8 +2,10 @@ package com.gp.hen.watchrate.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -31,6 +33,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
 /**
  * Created by esraa ahmed on 11/30/2015.
  */
@@ -41,12 +47,33 @@ public class home extends Activity {
     LinearLayout list_View;
     LayoutInflater layoutInflater;
     View search_card;
+    View review_card;
+    ArrayList movies_id;
+    String Url;
+    private SwipeRefreshLayout swipeView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ActionBar ab = getActionBar();
         ab.hide();
+        // Url="http://10.0.3.2:8080/Watch_and_Rate";
+//        Url ="http://192.168.1.6:8080/Watch_and_Rate";
+        Url = "http://watchandrate-fcigp.rhcloud.com";
+
+        swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe_view);
+        swipeView.setColorSchemeColors(Color.GRAY, Color.GREEN, Color.BLUE,
+                Color.RED, Color.BLACK);
+        swipeView.setDistanceToTriggerSync(10);// in dips
+        swipeView.setSize(SwipeRefreshLayout.DEFAULT);// LARGE also can be used
+
+        swipeView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            }
+        }, 200);
+
+        movies_id = new ArrayList();
         UserEntity user = UserEntity.getCurrentUser();
         System.out.println(user.getName() + " " + user.getEmail());
         //http://image.tmdb.org/t/p/w300/hO1R1TI429PjkOjby4dTPBrWFwn.jpg
@@ -66,42 +93,71 @@ public class home extends Activity {
         AnimationSet animation = new AnimationSet(false); //change to false
         animation.addAnimation(fadeIn);
         animation.addAnimation(fadeOut);
+
          layoutInflater = LayoutInflater.from(this);
          search_card = layoutInflater.inflate(R.layout.search_card, null);
+         review_card =  layoutInflater.inflate(R.layout.review_card, null);
 
         list_View = (LinearLayout) findViewById(R.id.searchlistView);
         search_content = (LinearLayout) findViewById(R.id.search_table);
         ImageButton search_btn = (ImageButton) findViewById(R.id.search_btn);
-        Button Search_info_btn = (Button) findViewById(R.id.Search_info_btn);
-        Button Reviews_btn = (Button) findViewById(R.id.Reviews_btn);
+        final Button Search_info_btn = (Button) findViewById(R.id.Search_info_btn);
+        final Button Reviews_btn = (Button) findViewById(R.id.Reviews_btn);
         final EditText search_box = (EditText) findViewById(R.id.search_box);
         search_content.setAnimation(animation);
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Search_info_btn.setBackground(getResources().getDrawable(R.drawable.tab_box));
                 list_View.removeAllViews();
                 search_content.setVisibility(View.VISIBLE);
                 Connect conn = new Connect();
-                conn.tag = "api";
+                conn.tag = "movie_api";
                 String query = "http://api.themoviedb.org/3/search/movie?api_key=23386b0753dd348bcb87ab9f516da5d5&query=" + search_box.getText().toString();
+                String query2 = "http://api.themoviedb.org/3/movie/8681/reviews?api_key=23386b0753dd348bcb87ab9f516da5d5";
                 query = query.replaceAll(" ", "%20");
                 conn.execute(query);
-
+                swipeView.setRefreshing(true);
+                swipeView.setEnabled(true);
 
             }
         });
         Search_info_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                movies_id = new ArrayList();
+                Search_info_btn.setBackground(getResources().getDrawable(R.drawable.tab_box));
+                Reviews_btn.setBackground(getResources().getDrawable(R.drawable.button_box));
                 list_View.removeAllViews();
                 search_content.setVisibility(View.VISIBLE);
                 Connect conn = new Connect();
-                conn.tag = "api";
+                conn.tag = "movie_api";
                 String query = "http://api.themoviedb.org/3/search/movie?api_key=23386b0753dd348bcb87ab9f516da5d5&query=" + search_box.getText().toString();
                 query = query.replaceAll(" ", "%20");
                 conn.execute(query);
+                swipeView.setRefreshing(true);
+                swipeView.setEnabled(true);
+
+            }
+        });
+        Reviews_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movies_id = new ArrayList();
+                Search_info_btn.setBackground(getResources().getDrawable(R.drawable.button_box));
+                Reviews_btn.setBackground(getResources().getDrawable(R.drawable.tab_box));
+                list_View.removeAllViews();
+              //  search_content.setVisibility(View.VISIBLE);
+             //   Toast.makeText(getApplicationContext(),"not implement yet", Toast.LENGTH_SHORT).show();
+                swipeView.setRefreshing(true);
+                swipeView.setEnabled( true );
+
+                   Connect conn = new Connect();
+                   conn.tag = "review_movie_api";
+                   String query = "http://api.themoviedb.org/3/search/movie?api_key=23386b0753dd348bcb87ab9f516da5d5&query=" + search_box.getText().toString();
+                   query = query.replaceAll(" ", "%20");
+                   conn.execute(query);
 
 
             }
@@ -124,7 +180,7 @@ public class home extends Activity {
     }
 
     public class Connect extends AsyncTask<String, Void, Void> {
-        String result, data = "", tag = "";
+        String result, data = "", tag = "",mov_name;
 
         protected Void doInBackground(String... strings) {
             //   System.out.println("dfklsdk;sd");
@@ -136,7 +192,7 @@ public class home extends Activity {
         // de mesh api d code 3ade bta3 t send request w teget data men server msh dh so2ale ma 3lina  hwa fen code servie
 
         protected void onPostExecute(Void unused) {
-            if (tag.equals("api")) {
+            if (tag.equals("movie_api")||tag.equals("review_movie_api")) {
                 System.out.println(result);
                 JSONParser parser = new JSONParser();
                 Object obj = null;
@@ -151,22 +207,88 @@ public class home extends Activity {
                         obj = parser.parse(movies.get(i).toString());
                         JSONObject film = (JSONObject) obj;
                         System.out.println(film.toString());
-                        addToList(film, i);
+                        if(tag.equals("review_movie_api")) {
+                            movies_id.add(film.get("original_title"));
+                            movies_id.add(film.get("id"));
+                        }
+                        else {
+                            addToList(film);
+                        }
                     }
                     if(movies.size()==0){
                         Toast.makeText(getApplicationContext(),"no result", Toast.LENGTH_SHORT).show();
+
                     }
 
+                    if(tag.equals("review_movie_api")){
+                        for(int i=0;i<movies_id.size();i++) {
+                            Connect conn2 = new Connect();
+                            conn2.tag = "review_api";
+                            conn2.mov_name =  movies_id.get(i).toString();
+                            i++;
+                            conn2.execute(Url+"/Search?id="+movies_id.get(i));
+                        }
+                        if (movies_id.size() == 0) {
+                            swipeView.setRefreshing(false);
+                            swipeView.setEnabled( false );
+
+                        }
+                    }
+
+
                 } catch (ParseException e) {
+                    Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
 
                 }
+                if (swipeView.isRefreshing()) {
+                    System.out.println("false ");
+                    swipeView.setRefreshing(false);
+                    swipeView.setEnabled(false);
+                }
             }
+            if(tag.equals("review_api")){
+                System.out.println(result);
+                JSONParser parser = new JSONParser();
+                Object obj = null;
+                try{
+                    obj = parser.parse(result);
+                    JSONObject data = (JSONObject) obj;
+                    result = data.get("results").toString();
+                    System.out.println(result);
+                    obj = parser.parse(result);
+                    JSONArray reviews = (JSONArray) obj;
+                    for (int i = 0; i < reviews.size(); i++) {
+                        obj = parser.parse(reviews.get(i).toString());
+                        JSONObject review = (JSONObject) obj;
+                        System.out.println(review.toString());
+                        addReviewToList(review,mov_name,i);
+                    }
+                    if(reviews.size()==0){
+                     //   Toast.makeText(getApplicationContext(),"no result", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }catch (ParseException e) {
+                   // Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                    swipeView.setRefreshing(false);
+                    swipeView.setEnabled(false);
+                }
+                if (swipeView.isRefreshing()) {
+                    System.out.println("false ");
+                    swipeView.setRefreshing(false);
+                    swipeView.setEnabled(false);
+                }
+            }
+
+
         }
     }
 
-    public void addToList(JSONObject film,int index) {
-        search_card.setId(Integer.valueOf(index));
+    public void addToList(JSONObject film) {
+
+        search_card.setId(Integer.valueOf(film.get("id").toString()));
         ImageView mov_img = (ImageView) search_card.findViewById(R.id.movie_img);
         TextView mov_title = (TextView) search_card.findViewById(R.id.movie_title);
         TextView mov_year = (TextView) search_card.findViewById(R.id.movie_year);
@@ -181,5 +303,19 @@ public class home extends Activity {
         vote_avg.setText("average : "+film.get("vote_average").toString());
                 list_View.addView(search_card);
         search_card = layoutInflater.inflate(R.layout.search_card, null);
+    }
+
+    public void addReviewToList(JSONObject review,String mov_name,int index){
+        review_card.setId(index);
+        TextView mov_title = (TextView) review_card.findViewById(R.id.movie_title);
+        TextView rev_author = (TextView) review_card.findViewById(R.id.review_author);
+        TextView rev_contnet = (TextView) review_card.findViewById(R.id.review_content);
+        mov_title.setText("Title : "+mov_name);
+        System.out.println(review.get("author").toString());
+        rev_author.setText("Author : "+review.get("author").toString());
+        System.out.println(review.get("content").toString());
+        rev_contnet.setText("Content : \n" + review.get("content").toString());
+        list_View.addView(review_card);
+        review_card = layoutInflater.inflate(R.layout.review_card, null);
     }
 }

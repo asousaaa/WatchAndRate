@@ -1,6 +1,9 @@
 package com.gp.hen.watchrate;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +55,7 @@ public class Connection {
             // Append Server Response To Content String
 
         } catch (Exception ex) {
+         result="error";
             ex.printStackTrace();
         } finally {
             try {

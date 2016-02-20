@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="120dp"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+
+    <TextView
+        android:id="@+id/movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Movie_name"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:layout_alignParentTop="true"
+
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/review_author"
+        android:layout_alignStart="@+id/review_author" />
+
+    <TextView
+        android:id="@+id/review_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/movie_title"
+
+
+        android:text="Author "
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/review_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:text="Content "
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:layout_below="@+id/review_author"
+        android:layout_alignLeft="@+id/review_author"
+        android:layout_alignStart="@+id/review_author"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_white"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/review_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
