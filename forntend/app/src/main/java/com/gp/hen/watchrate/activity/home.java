@@ -2,6 +2,7 @@ package com.gp.hen.watchrate.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -281,12 +282,10 @@ public class home extends Activity {
                     swipeView.setEnabled(false);
                 }
             }
-
-
         }
     }
 
-    public void addToList(JSONObject film) {
+    public void addToList(final JSONObject film) {
 
         search_card.setId(Integer.valueOf(film.get("id").toString()));
         ImageView mov_img = (ImageView) search_card.findViewById(R.id.movie_img);
@@ -297,12 +296,23 @@ public class home extends Activity {
         LoadImage load = new LoadImage();
         load.Image(mov_img);
         load.execute("http://image.tmdb.org/t/p/w300" + film.get("poster_path"));
-        mov_title.setText("Title : "+film.get("original_title").toString());
+        mov_title.setText("Title : " + film.get("original_title").toString());
         mov_year.setText("Year : "+film.get("release_date").toString());
-        vote_count.setText("vote : "+film.get("vote_count").toString());
-        vote_avg.setText("average : "+film.get("vote_average").toString());
+        vote_count.setText("vote : " + film.get("vote_count").toString());
+        vote_avg.setText("average : " + film.get("vote_average").toString());
                 list_View.addView(search_card);
         search_card = layoutInflater.inflate(R.layout.search_card, null);
+
+        final String jsonText = film.toJSONString();
+        mov_img.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Intent intent = new Intent(home.this, movie_info.class);
+                intent.putExtra("movie",jsonText);
+                finish();
+                startActivity(intent);
+            }
+        });
     }
 
     public void addReviewToList(JSONObject review,String mov_name,int index){

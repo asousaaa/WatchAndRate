@@ -9,12 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#7e008138"
-
             android:orientation="vertical">
 
             <RelativeLayout
@@ -22,9 +20,7 @@
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="#ff008138"
-
-                >
+                android:background="#ff008138">
 
                 <ImageButton
                     android:id="@+id/back_btn"
@@ -36,26 +32,20 @@
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_action_editor_format_list_bulleted" />
 
-
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
-
                     android:layout_toLeftOf="@+id/menu_btn"
                     android:layout_toRightOf="@+id/back_btn"
                     android:layout_toStartOf="@+id/menu_btn"
                     android:gravity="center_vertical|center"
                     android:paddingLeft="10dp"
                     android:text="Details and reviews "
-
-
                     android:textAlignment="center"
                     android:textColor="#ffffff"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-
 
                 <ImageButton
                     android:id="@+id/menu_btn"
@@ -70,15 +60,14 @@
                     android:scaleType="center"
                     android:textAllCaps="false"
                     android:layout_below="@+id/password_login"
-                    android:layout_centerHorizontal="true"
-                    />
+                    android:layout_centerHorizontal="true" />
+
             </RelativeLayout>
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="180dp"
                 android:orientation="vertical"
                 android:background="#7e008138"
                 android:padding="5dp">
@@ -108,7 +97,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/movie_title"
                     android:layout_marginLeft="5dp"
-
                     android:layout_toEndOf="@+id/movie_img"
                     android:layout_toRightOf="@+id/movie_img"
                     android:text="Year "
@@ -124,40 +112,51 @@
                     android:text="vote : 1207"
                     android:textColor="#ffffff"
                     android:textSize="15sp"
-                    android:layout_alignTop="@+id/vote_avg"
+                    android:layout_below="@+id/movie_year"
                     android:layout_toRightOf="@+id/movie_img"
                     android:layout_toEndOf="@+id/movie_img" />
-
 
                 <TextView
                     android:id="@+id/vote_avg"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:paddingTop="5dp"
-
                     android:text="average : 5.5"
                     android:textColor="#ffffff"
                     android:textSize="15sp"
-                    android:layout_above="@+id/imageView"
+                    android:layout_alignTop="@+id/vote_count"
+                    android:layout_alignRight="@+id/movie_des"
+                    android:layout_alignEnd="@+id/movie_des" />
+
+                <TextView
+                    android:id="@+id/movie_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="othres  othresothresothresothresothresothresothresothres othresothresothresothresothresothresothresothres  othresothresothres"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp"
+                    android:layout_below="@+id/movie_img"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/movie_img"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginBottom="5dp"
                     android:background="@drawable/line_white"
-                    android:id="@+id/imageView" />
+                    android:id="@+id/imageView"
+                    android:layout_below="@+id/movie_des"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:background="#7e008138"
                 android:orientation="vertical"
                 android:padding="10dp">
@@ -166,7 +165,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
-
                     android:layout_toLeftOf="@+id/menu_btn"
                     android:layout_toRightOf="@+id/back_btn"
                     android:layout_toStartOf="@+id/menu_btn"
@@ -191,9 +189,8 @@
                     <TextView
                         android:layout_width="228dp"
                         android:layout_height="30dp"
-
-                        android:text="•	Performance, acting"
-
+                        android:text="•	Story"
+                        android:id="@+id/StoryID"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
@@ -202,6 +199,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="1dp"
                         android:text="100%"
+                        android:id="@+id/StoryP"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
@@ -219,16 +217,16 @@
                     <TextView
                         android:layout_width="228dp"
                         android:layout_height="30dp"
-                        android:text="Story, tale"
-
+                        android:text="•	Acting"
+                        android:id="@+id/ActingID"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="30dp"
-
                         android:text="100%"
+                        android:id="@+id/ActingP"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
@@ -246,17 +244,16 @@
                     <TextView
                         android:layout_width="228dp"
                         android:layout_height="30dp"
-
-                        android:text="Story, tale"
-
+                        android:text="•	Direction"
+                        android:id="@+id/DirectionID"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="30dp"
-
                         android:text="100%"
+                        android:id="@+id/DirectionP"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
@@ -274,44 +271,15 @@
                     <TextView
                         android:layout_width="228dp"
                         android:layout_height="30dp"
-
-                        android:text="Story, tale"
-
+                        android:text="•	Music"
+                        android:id="@+id/MusicID"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="30dp"
-
-                        android:text="100%"
-                        android:textColor="#ffffff"
-                        android:textSize="20sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/box"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:paddingTop="20dp">
-
-                    <TextView
-                        android:layout_width="228dp"
-                        android:layout_height="30dp"
-
-                        android:text="Story, tale"
-
-                        android:textColor="#ffffff"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="30dp"
-
+                        android:id="@+id/MusicP"
                         android:text="100%"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
@@ -330,112 +298,72 @@
                     <TextView
                         android:layout_width="228dp"
                         android:layout_height="30dp"
-
-                        android:text="Story, tale"
-
+                        android:text="•	Motion Picture"
+                        android:id="@+id/MotionID"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="50dp"
                         android:layout_height="30dp"
-
                         android:text="100%"
+                        android:id="@+id/MotionP"
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/box"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:paddingTop="20dp">
-
-                    <TextView
-                        android:layout_width="228dp"
-                        android:layout_height="30dp"
-
-                        android:text="Story, tale"
-
-                        android:textColor="#ffffff"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="30dp"
-
-                        android:text="100%"
-                        android:textColor="#ffffff"
-                        android:textSize="20sp" />
-
-                </LinearLayout>
             </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/search_table"
-            android:background="#7e008138"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="#008138"
-                android:gravity="center_horizontal|center_vertical"
-                android:id="@+id/header"
+                android:id="@+id/search_table"
+                android:background="#7e008138"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                >
-                <Button
-                    android:id="@+id/Search_info_btn"
-                    android:layout_width="150dp"
-                    android:layout_height="33dp"
-                    android:text="Rate "
-                    android:textColor="#ffffff"
-                    android:textAllCaps="false"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="#008138"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:id="@+id/header"
 
-                    android:background="@drawable/button_box"
-                    android:layout_below="@+id/login_button"
-                    android:layout_alignLeft="@+id/login_button"
-                    android:layout_alignStart="@+id/login_button" />
+                    >
+                    <Button
+                        android:id="@+id/Search_info_btn"
+                        android:layout_width="150dp"
+                        android:layout_height="33dp"
+                        android:text="Rate "
+                        android:textColor="#ffffff"
+                        android:textAllCaps="false"
 
-                <Button
-                    android:id="@+id/Reviews_btn"
-                    android:layout_width="150dp"
-                    android:layout_height="33dp"
-                    android:text="Reviews "
-                    android:textColor="#ffffff"
-                    android:textAllCaps="false"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/button_box"
-                    android:layout_below="@+id/login_button"
-                    />
+                        android:background="@drawable/button_box"
+                        android:layout_below="@+id/login_button"
+                        android:layout_alignLeft="@+id/login_button"
+                        android:layout_alignStart="@+id/login_button" />
 
+                    <Button
+                        android:id="@+id/Reviews_btn"
+                        android:layout_width="150dp"
+                        android:layout_height="33dp"
+                        android:text="Reviews "
+                        android:textColor="#ffffff"
+                        android:textAllCaps="false"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/button_box"
+                        android:layout_below="@+id/login_button" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listView"
+                    android:orientation="vertical"
+                    android:background="#ff008138">
+
+                </LinearLayout>
             </LinearLayout>
-
-
-
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/listView"
-                   android:orientation="vertical"
-                   android:background="#ff008138">
-
-
-
-
-
-               </LinearLayout>
-
-
-
-           </LinearLayout>
         </LinearLayout>
-
-
     </ScrollView>
 </LinearLayout>
