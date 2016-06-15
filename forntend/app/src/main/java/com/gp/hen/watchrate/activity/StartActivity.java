@@ -41,9 +41,9 @@ public class StartActivity extends Activity {
         ActionBar ab = getActionBar();
            ab.hide();
 
-        // Url="http://10.0.3.2:8080/Watch_and_Rate";
+         Url="http://10.0.3.2:8080/Watch_and_Rate";
 //        Url ="http://192.168.1.6:8080/Watch_and_Rate";
-        Url = "http://watchandrate-fcigp.rhcloud.com";
+  //      Url = "http://watchandrate-fcigp.rhcloud.com";
         logo = (ImageView) findViewById(R.id.logo);
         signup = (Button) findViewById(R.id.sign_up_button);
         sign_in = (Button) findViewById(R.id.sign_in_button);
@@ -107,11 +107,11 @@ public class StartActivity extends Activity {
                 View tab_login = layoutInflater.inflate(R.layout.tab_login, null);
                 list.addView(tab_login);
 
-                Button forget = (Button) findViewById(R.id.forget);
-                forget.setOnClickListener(new View.OnClickListener() {
+                Button skip = (Button) findViewById(R.id.skip_btn);
+                skip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(StartActivity.this, home.class);
+                        Intent intent = new Intent(StartActivity.this, add_review.class);
                         finish();
                         startActivity(intent);
                     }

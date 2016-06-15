@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.content.Intent;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,10 @@ public class home extends Activity {
     View review_card;
     ArrayList movies_id;
     String Url;
+    SlidingPaneLayout mSlidingPanel;
+    SlidingPanel slide;
+
+
     private SwipeRefreshLayout swipeView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,36 @@ public class home extends Activity {
         // Url="http://10.0.3.2:8080/Watch_and_Rate";
 //        Url ="http://192.168.1.6:8080/Watch_and_Rate";
         Url = "http://watchandrate-fcigp.rhcloud.com";
+
+
+        // Sliding Panel Layout ( START )
+        mSlidingPanel = (SlidingPaneLayout) findViewById(R.id.SlidingPanel);
+        mSlidingPanel.setParallaxDistance(200);
+
+        slide = new SlidingPanel();
+        slide.setContext(home.this);
+        slide.setmSlidingPanel(mSlidingPanel);
+        slide.setUser_img((ImageView) findViewById(R.id.slide_user_img));
+        slide.setLogout( (Button) findViewById(R.id.logout_btn));
+        slide.setHome((Button) findViewById(R.id.home_btn));
+        slide.setSetting((Button) findViewById(R.id.settings_btn));
+        slide.setMy_review((Button) findViewById(R.id.myreview_btn));
+        slide.setAbout((Button) findViewById(R.id.about_btn));
+        slide.setProfile((Button) findViewById(R.id.profile_btn));
+        slide.setUser_name((TextView) findViewById(R.id.slide_user_name));
+        slide.setUser_score((TextView) findViewById(R.id.slide_user_score));
+        slide.init();
+
+        ImageButton menu = (ImageButton) findViewById((R.id.menu_btn));
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mSlidingPanel.openPane();
+            }
+        });
+        // Sliding Panel Layout ( END )
 
         swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe_view);
         swipeView.setColorSchemeColors(Color.GRAY, Color.GREEN, Color.BLUE,
@@ -282,6 +317,8 @@ public class home extends Activity {
                     swipeView.setEnabled(false);
                 }
             }
+
+
         }
     }
 
@@ -296,23 +333,22 @@ public class home extends Activity {
         LoadImage load = new LoadImage();
         load.Image(mov_img);
         load.execute("http://image.tmdb.org/t/p/w300" + film.get("poster_path"));
-        mov_title.setText("Title : " + film.get("original_title").toString());
+        mov_title.setText("Title : "+film.get("original_title").toString());
         mov_year.setText("Year : "+film.get("release_date").toString());
-        vote_count.setText("vote : " + film.get("vote_count").toString());
-        vote_avg.setText("average : " + film.get("vote_average").toString());
+        vote_count.setText("vote : "+film.get("vote_count").toString());
+        vote_avg.setText("average : "+film.get("vote_average").toString());
                 list_View.addView(search_card);
-        search_card = layoutInflater.inflate(R.layout.search_card, null);
-
         final String jsonText = film.toJSONString();
-        mov_img.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
+        search_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("hey");
                 Intent intent = new Intent(home.this, movie_info.class);
                 intent.putExtra("movie",jsonText);
-                finish();
                 startActivity(intent);
             }
         });
+        search_card = layoutInflater.inflate(R.layout.search_card, null);
     }
 
     public void addReviewToList(JSONObject review,String mov_name,int index){

@@ -1,172 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/SlidingPanel"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffc4c4c4"
+    android:layout_height="match_parent">
 
-    android:orientation="vertical">
+    <include layout="@layout/slidingpanelayout_card" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#ff008138"
-        >
-
-        <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:layout_centerVertical="true"
-            android:id="@+id/menu_btn"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_action_editor_format_list_bulleted"
-            />
-
-        <RelativeLayout
-            android:layout_width="50dp"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_height="50dp"
-            android:id="@+id/relativeLayout">
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="centerInside"
-                android:background="@android:color/transparent"
-                android:src="@drawable/notify"
-                />
-            <ImageView
-                android:layout_width="20dp"
-                android:background="@drawable/count"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_height="20dp" />
-
-            <TextView
-                android:layout_width="20dp"
-                android:gravity="center"
-                android:text="4"
-                android:textStyle="bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="2dp"
-                android:id="@+id/count"
-                android:textColor="#ffffff"
-                android:layout_marginRight="2dp"
-                android:layout_height="wrap_content"
-                />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="40dp"
-            android:layout_centerVertical="true"
-            android:layout_height="60dp"
-            android:gravity="center_vertical"
-            android:layout_toLeftOf="@+id/relativeLayout"
-            android:layout_toStartOf="@+id/relativeLayout">
-            <EditText
-                android:id="@+id/search_box"
-                android:minWidth="220dp"
-                android:maxWidth="983px"
-                android:layout_width="wrap_content"
-                android:layout_height="33dp"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="10dp"
-                android:maxLines="1"
-                android:background="@drawable/box"
-                android:ems="10"
-                android:hint="Search"
-                android:inputType="text"
-                android:paddingRight="30dp"
-                android:paddingLeft="10dp"
-                android:textColor="#ffffff" />
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/search_btn"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_action_action_search"
-                />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:id="@+id/search_table"
-        android:background="#7e008138"
         android:layout_height="match_parent"
+        android:background="#ffc4c4c4"
+
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#ff008138">
+
+            <ImageButton
+                android:id="@+id/menu_btn"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_action_editor_format_list_bulleted" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp">
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/notify" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/count" />
+
+                <TextView
+                    android:id="@+id/count"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:text="4"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="40dp"
+                android:layout_toLeftOf="@+id/relativeLayout"
+                android:layout_toStartOf="@+id/relativeLayout"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/search_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/box"
+                    android:ems="10"
+                    android:hint="Search"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxWidth="983px"
+                    android:minWidth="220dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="30dp"
+                    android:textColor="#ffffff" />
+
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_action_search" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
         <LinearLayout
+            android:id="@+id/search_table"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="#008138"
-            android:gravity="center_horizontal|center_vertical"
-            android:id="@+id/header"
+            android:layout_height="match_parent"
+            android:background="#7e008138"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            >
-            <Button
-                android:id="@+id/Search_info_btn"
-                android:layout_width="150dp"
-                android:layout_height="33dp"
-                android:text="Movies "
-                android:textColor="#ffffff"
-                android:textAllCaps="false"
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#008138"
+                android:gravity="center_horizontal|center_vertical"
 
-                android:background="@drawable/button_box"
-                android:layout_below="@+id/login_button"
-                android:layout_alignLeft="@+id/login_button"
-                android:layout_alignStart="@+id/login_button" />
+                >
 
-            <Button
-                android:id="@+id/Reviews_btn"
-                android:layout_width="150dp"
-                android:layout_height="33dp"
-                android:text="Reviews "
-                android:textColor="#ffffff"
-                android:textAllCaps="false"
-               android:layout_marginLeft="10dp"
-                android:background="@drawable/button_box"
-                android:layout_below="@+id/login_button"
-                 />
+                <Button
+                    android:id="@+id/Search_info_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="33dp"
+                    android:layout_alignLeft="@+id/login_button"
+                    android:layout_alignStart="@+id/login_button"
+                    android:layout_below="@+id/login_button"
+
+                    android:background="@drawable/button_box"
+                    android:text="Movies "
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/Reviews_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="33dp"
+                    android:layout_below="@+id/login_button"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_box"
+                    android:text="Reviews "
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+            <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/swipe_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+
+                <ScrollView
+
+                    android:id="@+id/lsearch_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/header">
+
+
+                    <LinearLayout
+                        android:id="@+id/searchlistView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="vertical" />
+                </ScrollView>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
         </LinearLayout>
-        <android.support.v4.widget.SwipeRefreshLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/swipe_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            >
-
-<ScrollView
-
-    android:layout_width="match_parent"
-    android:id="@+id/lsearch_content"
-    android:layout_height="wrap_content"
-    android:layout_alignTop="@+id/header"
-    >
-
-
-    <LinearLayout
-        android:id="@+id/searchlistView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:orientation="vertical"
-        />
-</ScrollView>
-        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</android.support.v4.widget.SlidingPaneLayout>

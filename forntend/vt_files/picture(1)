@@ -1,8 +1,0 @@
-{
-   "error": {
-      "message": "(#803) Cannot query users by their username (loveesso)",
-      "type": "OAuthException",
-      "code": 803,
-      "fbtrace_id": "AKK5PITyhAq"
-   }
-}

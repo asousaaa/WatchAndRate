@@ -1,48 +1,69 @@
 package com.gp.hen.watchrate.activity;
 
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.gp.hen.watchrate.LoadImage;
 import com.gp.hen.watchrate.R;
-
-import org.json.JSONStringer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.util.Objects;
-import java.util.jar.JarInputStream;
 
 /**
  * Created by esraa ahmed on 3/14/2016.
  */
 public class movie_info extends Activity {
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
+    SlidingPaneLayout mSlidingPanel;
+    SlidingPanel slide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_info);
-        // setContentView(R.layout.activity_movie_info);
-        ImageButton back = (ImageButton) findViewById(R.id.menu_btn);
-        ImageButton menu = (ImageButton) findViewById(R.id.back_btn);
+
+
+        // Sliding Panel Layout ( START )
+        mSlidingPanel = (SlidingPaneLayout) findViewById(R.id.SlidingPanel);
+        mSlidingPanel.setParallaxDistance(200);
+
+        slide = new SlidingPanel();
+        slide.setContext(movie_info.this);
+        slide.setmSlidingPanel(mSlidingPanel);
+        slide.setUser_img((ImageView) findViewById(R.id.slide_user_img));
+        slide.setLogout( (Button) findViewById(R.id.logout_btn));
+        slide.setHome((Button) findViewById(R.id.home_btn));
+        slide.setSetting((Button) findViewById(R.id.settings_btn));
+        slide.setMy_review((Button) findViewById(R.id.myreview_btn));
+        slide.setAbout((Button) findViewById(R.id.about_btn));
+        slide.setProfile((Button) findViewById(R.id.profile_btn));
+        slide.setUser_name((TextView) findViewById(R.id.slide_user_name));
+        slide.setUser_score((TextView) findViewById(R.id.slide_user_score));
+        slide.init();
+
+        ImageButton menu = (ImageButton) findViewById((R.id.menu_btn));
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mSlidingPanel.openPane();
+            }
+        });
+        // Sliding Panel Layout ( END )
+
+
+
+        ImageButton add_review = (ImageButton) findViewById(R.id.add_review_btn);
+
 
         TextView movieTitle = (TextView) findViewById(R.id.movie_title);
         TextView movieYear = (TextView) findViewById(R.id.movie_year);
@@ -77,8 +98,8 @@ public class movie_info extends Activity {
         load.Image(movieImage);
         load.execute("http://image.tmdb.org/t/p/w300" + json.get("poster_path"));
 
-        back.setClickable(true);
-        back.setOnClickListener(new View.OnClickListener() {
+        add_review.setClickable(true);
+        add_review.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 Intent intent = new Intent(movie_info.this, add_review.class);
@@ -86,6 +107,6 @@ public class movie_info extends Activity {
                 startActivity(intent);
             }
         });
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 }

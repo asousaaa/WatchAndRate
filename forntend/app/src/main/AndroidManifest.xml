@@ -32,15 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.movie_info"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.default" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".activity.search"
             android:label="@string/app_name" >
             <intent-filter>
@@ -50,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.add_review"
+            android:name=".activity.user_profile"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,11 +59,33 @@
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </activity>
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        <activity
+            android:name=".activity.movie_info"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.user_reviews"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.add_review"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
