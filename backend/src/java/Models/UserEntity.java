@@ -2,6 +2,7 @@ package Models;
 
 import java.util.ArrayList;
 import java.sql.*;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
@@ -25,7 +26,7 @@ public class UserEntity {
     private ArrayList<ReviewEntity> review;
     private Sql sql;
 
-    public UserEntity() throws ClassNotFoundException {
+    public UserEntity() {
         sql = new Sql();
     }
 
@@ -85,10 +86,9 @@ public class UserEntity {
                 image = sql.ResStetmnt.getString("USERIMAGE");
                 Name = sql.ResStetmnt.getString("USERNAME");
                 Score = sql.ResStetmnt.getDouble("SCORE");
-                 ret.put("status", "login");
-            }
-            else{
-                 ret.put("status", "something wrong ,Try again..");
+                ret.put("status", "login");
+            } else {
+                ret.put("status", "something wrong ,Try again..");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -96,4 +96,60 @@ public class UserEntity {
         }
         return ret;
     }
+
+    public JSONObject updateInfo(JSONObject json) {
+
+        JSONObject ret = new JSONObject();
+        try {
+            sql.open();
+            sql.Stetmnt = sql.Conection.createStatement();
+
+            sql.Stetmnt.executeUpdate("UPDATE  user set EMAIL='" + json.get("email") + "' , PASS='" + json.get("pass")
+                    + "' , USERNAME ='" + json.get("username") + "' , USERIMAGE='" + json.get("userimage")
+                    + "' where USER_ID= " + json.get("userid") + " ");
+            ret.put("status", "updated");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ret.put("status", "failed");
+        }
+
+        return ret;
+    }
+
+    public JSONObject deleteAccount(JSONObject json) {
+
+        JSONObject ret = new JSONObject();
+        try {
+            sql.open();
+            sql.Stetmnt = sql.Conection.createStatement();
+
+            sql.Stetmnt.executeUpdate("DELETE FROM  comment where USER_ID= " + json.get("userid") + " ");
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.Stetmnt.executeUpdate("DELETE FROM  comment_notification where USER_ID= " + json.get("userid") + " ");
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.Stetmnt.executeUpdate("DELETE FROM  notification where USER_ID= " + json.get("userid") + " ");
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.Stetmnt.executeUpdate("DELETE FROM  rate where USER_ID= " + json.get("userid") + " ");
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.Stetmnt.executeUpdate("DELETE FROM  rate_notification where USER_ID= " + json.get("userid") + " ");
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.Stetmnt.executeUpdate("DELETE FROM  review where USER_ID= " + json.get("userid") + " ");
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.Stetmnt.executeUpdate("DELETE FROM  user where USER_ID= " + json.get("userid") + " ");
+
+            ret.put("status", "deleted");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ret.put("status", "failed");
+        }
+
+        return ret;
+    }
+    
+    
+    
+     
+     
 }

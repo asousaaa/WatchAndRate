@@ -5,7 +5,6 @@
  */
 package Controller.User;
 
-import Models.ReviewEntity;
 import Models.UserEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,8 +23,8 @@ import org.json.simple.parser.ParseException;
  *
  * @author hosam azzam
  */
-@WebServlet(name = "Viewown", urlPatterns = {"/Viewown"})
-public class Viewown extends HttpServlet {
+@WebServlet(name = "Delete_account", urlPatterns = {"/Delete_account"})
+public class Delete_account extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,13 +41,11 @@ public class Viewown extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
            JSONParser parser = new JSONParser();
-         
             Object obj = parser.parse(request.getParameter("data"));
             JSONObject object = (JSONObject) obj;
-            ReviewEntity rev = new ReviewEntity();
-       
-            JSONObject ret = rev.getUserReviews(object);
-             
+            UserEntity user = new UserEntity();
+            JSONObject ret = user.deleteAccount(object);
+            
             out.println(ret.toJSONString());
         }
     }
@@ -68,7 +65,7 @@ public class Viewown extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ParseException ex) {
-            Logger.getLogger(Viewown.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Delete_account.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -86,7 +83,7 @@ public class Viewown extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ParseException ex) {
-            Logger.getLogger(Viewown.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Delete_account.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

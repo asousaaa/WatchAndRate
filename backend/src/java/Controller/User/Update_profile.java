@@ -5,13 +5,19 @@
  */
 package Controller.User;
 
+import Models.UserEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -30,19 +36,17 @@ public class Update_profile extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Update_profile</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Upldate_profile at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(request.getParameter("data"));
+            JSONObject object = (JSONObject) obj;
+            UserEntity user = new UserEntity();
+            JSONObject ret = user.updateInfo(object);
+            
+            out.println(ret.toJSONString());
         }
     }
 
@@ -58,7 +62,11 @@ public class Update_profile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(Update_profile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -72,7 +80,11 @@ public class Update_profile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(Update_profile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

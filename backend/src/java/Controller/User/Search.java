@@ -5,8 +5,12 @@
  */
 package Controller.User;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,22 +33,77 @@ public class Search extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected String processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        
+      String id = request.getParameter("id");
+         URL url = null;
+    BufferedReader reader = null;
+    StringBuilder stringBuilder = null;
+ 
+    try
+    {
+      
+      url = new URL("http://api.themoviedb.org/3/movie/"+id+"/reviews?api_key=23386b0753dd348bcb87ab9f516da5d5");
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+       
+      // just want to do an HTTP GET here
+      connection.setRequestMethod("GET");
+       
+      // uncomment this if you want to write output to this url
+      //connection.setDoOutput(true);
+       
+      // give it 15 seconds to respond
+      connection.setReadTimeout(15*1000);
+      connection.connect();
+ 
+      // read the output from the server
+      reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+      stringBuilder = new StringBuilder();
+ 
+      String line = null;
+      while ((line = reader.readLine()) != null)
+      {
+        stringBuilder.append(line + "\n");
+      }
+   
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw e;
+    }
+    finally
+    {
+      // close the reader; this can throw an exception too, so
+      // wrap it in another try/catch block.
+      if (reader != null)
+      {
+        try
+        {
+          reader.close();
+          
+            response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Search</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Search at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+           
+            out.println(stringBuilder.toString());
+          
         }
+          
+        }
+        catch (IOException ioe)
+        {
+          ioe.printStackTrace();
+        }
+      }
+    
     }
+        return null;
+    
+    }
+        
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
