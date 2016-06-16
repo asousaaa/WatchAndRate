@@ -78,12 +78,32 @@ MoiveEntity(){
 
    public String getmovie(int mov_id) {
         
-        return String.valueOf(mov_id);
+        try {
+            sql.open();
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from movie where API_ID=" +mov_id + " ");
+
+            if (sql.ResStetmnt.next()) {
+           
+                Name = sql.ResStetmnt.getString("MOVIENAME");
+              
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+           
+        }
+        return Name;
     } 
 
     boolean insertmovie(JSONObject json) throws SQLException {
        try{
-         System.out.println("entered");
+         System.out.println("entered ");
+         sql.open();
+         
+           if(!getmovie(Integer.valueOf(json.get("movieid").toString())).equals("")){
+               return true;
+           }
+         
             sql.Stetmnt = sql.Conection.createStatement();
             sql.Stetmnt.executeUpdate("INSERT INTO movie (MOVIENAME,TYPE,YEAR,DESCRIPTION,MOVIEIMAGE,RATESYSTEM,API_ID,Story,"
                     + "Direction,Acting,Motion,Music)VALUES ('"+
@@ -100,4 +120,6 @@ MoiveEntity(){
         
         return true;
     }
+    
+    
 }

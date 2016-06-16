@@ -147,6 +147,29 @@ public class UserEntity {
 
         return ret;
     }
+
+    String getUsername(int userID) {
+       
+        try {
+            sql.open();
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from user where USER_ID=" +userID + " ");
+
+            if (sql.ResStetmnt.next()) {
+                User_Id = sql.ResStetmnt.getInt("USER_ID");
+                Email = sql.ResStetmnt.getString("EMAIL");
+                Pass = sql.ResStetmnt.getString("PASS");
+                image = sql.ResStetmnt.getString("USERIMAGE");
+                Name = sql.ResStetmnt.getString("USERNAME");
+                Score = sql.ResStetmnt.getDouble("SCORE");
+               
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+           
+        }
+        return Name;
+    }
     
     
     

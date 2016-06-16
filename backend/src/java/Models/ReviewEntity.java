@@ -151,11 +151,11 @@ public class ReviewEntity {
                 sql.open();
                 System.out.println("entered");
                 sql.Stetmnt = sql.Conection.createStatement();
-                sql.Stetmnt.executeUpdate("INSERT INTO review(TITLE,REVIEW_CONTENT ,IMAGE_REVIEW,STAR_RATE,USER_ID,MOVIE_ID,DATE ) VALUES ('"
+                sql.Stetmnt.executeUpdate("INSERT INTO review(TITLE,REVIEW_CONTENT ,IMAGE_REVIEW,STAR_RATE,USER_ID,MOVIE_ID,DATE,ENABLE_COMMENT) VALUES ('"
                         + json.get("title") + "','" + json.get("content") + "','" + json.get("image") + "','" + json.get("rate") + "','"
-                        + json.get("userid") + "','" + json.get("movieid") + "','" + json.get("date") + "')");
+                        + json.get("userid") + "','" + json.get("movieid") + "','" + json.get("date") + "',"+ json.get("enable") + ")");
 
-                ret.put("status", "insrted");
+                ret.put("status", "inserted");
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -187,6 +187,58 @@ public class ReviewEntity {
         }
 
         return ret;
+    }
+    
+    public JSONObject getReviewList(JSONObject json){
+       JSONObject ret = new JSONObject();
+        JSONArray list = new JSONArray();
+
+        try {
+            sql.open();
+
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from review where  MOVIE_ID= " + json.get("movieid") + " ");
+
+            boolean flage = false;
+            while (sql.ResStetmnt.next()) {
+                flage = true;
+
+                JSONObject review = new JSONObject();
+                title = sql.ResStetmnt.getString("TITLE");
+                reviewId = sql.ResStetmnt.getInt("REVIEW_ID");
+                date = sql.ResStetmnt.getString("DATE");
+                Body = sql.ResStetmnt.getString("REVIEW_CONTENT");
+                userID = sql.ResStetmnt.getInt("USER_ID");
+                
+                UserEntity user = new UserEntity();
+                String user_name = user.getUsername(userID);
+                
+                int mov_id = sql.ResStetmnt.getInt("MOVIE_ID");
+                MoiveEntity moiveEntity = new MoiveEntity();
+
+                String mov_name = moiveEntity.getmovie(mov_id);
+
+                review.put("content", Body);
+                review.put("mov_name", mov_name);
+                review.put("date", date);
+                review.put("userid", userID);
+                review.put("username", user_name);
+                review.put("review_title", title);
+                review.put("mov_id", mov_id);
+                review.put("rev_id", reviewId);
+                list.add(review);
+
+            }
+            ret.put("status", "reviewlist");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ret.put("status", "something wrong ,Try again..");
+        }
+
+        ret.put("results", list);
+        return ret;
+        
     }
 
 }
