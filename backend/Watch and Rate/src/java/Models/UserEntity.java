@@ -194,6 +194,48 @@ public class UserEntity {
     }
     
     
+     public JSONObject getHigherReviewers() {
+     JSONObject res = new JSONObject();
+       JSONArray list = new JSONArray();
+
+        try {
+            sql.open();
+
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from user order by SCORE desc limit 5");
+
+            boolean flage = false;
+            while (sql.ResStetmnt.next()) {
+                flage = true;
+                JSONObject result = new JSONObject();
+                User_Id = sql.ResStetmnt.getInt("USER_ID");
+                Email = sql.ResStetmnt.getString("EMAIL");
+                Pass = sql.ResStetmnt.getString("PASS");
+                image = sql.ResStetmnt.getString("USERIMAGE");
+                Name = sql.ResStetmnt.getString("USERNAME");
+                Score = sql.ResStetmnt.getDouble("SCORE");
+
+                result.put("User_Id", User_Id);
+                result.put("Email", Email);
+                result.put("pass", Pass);
+                result.put("Pass", image);
+                result.put("Name", Name);
+                result.put("Score", Score);
+                list.add(result);
+
+            }
+            res.put("status", "higherScore");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            res.put("status", "something wrong ,Try again..");
+        }
+
+        res.put("results", list);
+        return res;
+    }
+    
+    
     
      
      
