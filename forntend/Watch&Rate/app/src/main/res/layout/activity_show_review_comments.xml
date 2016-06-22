@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/SlidingPanel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/slidingpanelayout_card" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffc4c4c4"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#ff008138">
+
+            <ImageButton
+                android:id="@+id/menu_btn"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_action_editor_format_list_bulleted" />
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+
+                android:layout_alignParentRight="true"
+
+                android:layout_centerVertical="true"
+
+                android:layout_marginRight="35dp"
+
+                android:layout_toRightOf="@+id/menu_btn"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Review Details"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/relativeLayout2"
+                android:layout_alignParentTop="true"
+                android:background="#7e008138">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#7e008138"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:background="#7e008138"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/review_img"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_margin="10dp"
+                            android:scaleType="centerInside"
+
+                            android:src="@drawable/no_image_cilcl" />
+
+                        <TextView
+                            android:id="@+id/review_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/review_img"
+                            android:layout_toEndOf="@+id/review_img"
+                            android:layout_toRightOf="@+id/review_img"
+                            android:text=""
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/review_author"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignEnd="@+id/review_img"
+                            android:layout_alignRight="@+id/review_img"
+                            android:layout_below="@+id/review_img"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="-10dp"
+                            android:gravity="center_horizontal"
+                            android:text=""
+                            android:textColor="#ffffff"
+                            android:textSize="16sp" />
+
+
+                        <TextView
+                            android:id="@+id/review_desc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/review_title"
+                            android:layout_alignStart="@+id/review_title"
+                            android:layout_below="@+id/review_title"
+
+                            android:layout_marginBottom="10dp"
+                            android:text=""
+                            android:textColor="#ffffff"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/banner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/line_white" />
+
+
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/commentlistView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:orientation="vertical"
+                        android:paddingLeft="30dp"
+                        >
+
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="#ff008138">
+
+
+                <EditText
+                    android:id="@+id/comment_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="5dp"
+                    android:hint="Write your comment"
+                    android:inputType="text"
+                    android:maxLines="5"
+                    android:textColor="#ffffff"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toLeftOf="@+id/comment_add_btn"
+                    android:layout_toStartOf="@+id/comment_add_btn" />
+
+                <ImageButton
+                    android:id="@+id/comment_add_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_content_send" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+</android.support.v4.widget.SlidingPaneLayout>

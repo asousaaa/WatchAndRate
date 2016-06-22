@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/SlidingPanel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/slidingpanelayout_card" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7e008138"
+        android:gravity="right"
+
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#ff008138"
+
+            >
+
+            <ImageButton
+                android:id="@+id/menu_btn"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_action_editor_format_list_bulleted" />
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+
+                android:gravity="center_vertical|center_horizontal"
+
+                android:paddingLeft="10dp"
+                android:text="Add New Review "
+
+
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/rev_titile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:hint="Title of review"
+                android:inputType="text"
+                android:maxLines="2"
+                android:textColor="#ffffff" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/rev_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:hint="Content of Review"
+            android:inputType="text"
+            android:maxLines="7"
+            android:minHeight="70dp"
+            android:textColor="#ffffff" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/enable_comment_ckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enable Comment" />
+
+            <TextView
+                android:id="@+id/rev_img_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toEndOf="@+id/enable_comment_ckbox"
+                android:layout_toLeftOf="@+id/image_rev_btn"
+                android:layout_toRightOf="@+id/enable_comment_ckbox"
+                android:gravity="center_horizontal|center_vertical"
+                android:maxLines="3"
+                android:minHeight="35dp"
+                android:padding="2dp"
+                android:text="chosse image" />
+
+            <ImageButton
+                android:id="@+id/image_rev_btn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/ic_action_image_camera_alt"
+                android:scaleType="center" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/add_rev_btn"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_weight="0.00"
+            android:background="@drawable/button_box"
+            android:text="Add  review"
+            android:textAllCaps="false"
+
+            android:textStyle="normal" />
+    </LinearLayout>
+</android.support.v4.widget.SlidingPaneLayout>

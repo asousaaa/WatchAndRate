@@ -1,0 +1,1 @@
+include ':app', ':httpclient-4.0.3', ':json-simple-1.1.1', ':android-async-http-1.4.4'

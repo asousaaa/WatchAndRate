@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/SlidingPanel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/slidingpanelayout_card" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffc4c4c4"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#ff008138">
+
+            <ImageButton
+                android:id="@+id/menu_btn"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_action_editor_format_list_bulleted" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp">
+
+                <ImageButton
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside"
+
+                    android:src="@drawable/notify" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/count" />
+
+                <TextView
+                    android:id="@+id/count"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:text="9"
+                    android:textSize="10sp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="40dp"
+                android:layout_toLeftOf="@+id/relativeLayout"
+                android:layout_toStartOf="@+id/relativeLayout"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/search_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/box"
+                    android:ems="10"
+                    android:hint="Search"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxWidth="983px"
+                    android:minWidth="220dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="30dp"
+                    android:textColor="#ffffff" />
+
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_action_search" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/search_table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#7e008138"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#008138"
+                android:gravity="center_horizontal|center_vertical"
+
+                >
+
+                <Button
+                    android:id="@+id/Search_info_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="33dp"
+                    android:layout_alignLeft="@+id/login_button"
+                    android:layout_alignStart="@+id/login_button"
+                    android:layout_below="@+id/login_button"
+
+                    android:background="@drawable/button_box"
+                    android:text="Movies "
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/Reviews_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="33dp"
+                    android:layout_below="@+id/login_button"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_box"
+                    android:text="Reviews "
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+            <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/swipe_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+
+                <ScrollView
+
+                    android:id="@+id/lsearch_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/header">
+
+
+                    <LinearLayout
+                        android:id="@+id/searchlistView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="vertical" />
+                </ScrollView>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:background="#7e008138"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="21dp"
+                        android:src="@drawable/ic_action_action_query_builder" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/show_hide_recen_btn"
+                        android:layout_toRightOf="@+id/imageView8"
+                        android:layout_toStartOf="@+id/show_hide_recen_btn"
+                        android:gravity="center_vertical|left"
+                        android:text="Recently  Movies"
+                        android:textColor="#ffffff"
+                        android:textSize="20dp"
+
+                        />
+
+                    <Button
+                        android:id="@+id/show_hide_recen_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+
+                        android:background="@android:color/transparent"
+                        android:text="Show"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+
+                        android:layout_toLeftOf="@+id/recently_btn"
+                        android:layout_toStartOf="@+id/recently_btn"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentTop="true" />
+                    <Button
+                        android:id="@+id/recently_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:text="More"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentTop="true" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="-5dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:id="@+id/recentrlylistview"
+                    android:background="#36807d">
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:background="#7e008138"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="21dp"
+                        android:src="@drawable/ic_action_action_trending_up" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/show_hide_top_btn"
+                        android:layout_toRightOf="@+id/imageView8"
+                        android:layout_toStartOf="@+id/show_hide_top_btn"
+                        android:gravity="center_vertical|left"
+                        android:text="Top Movies"
+                        android:textColor="#ffffff"
+                        android:textSize="20dp"
+
+                        />
+
+                    <Button
+                        android:id="@+id/show_hide_top_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+
+                        android:background="@android:color/transparent"
+                        android:text="Show"
+
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+
+                        android:layout_toLeftOf="@+id/top_btn"
+                        android:layout_toStartOf="@+id/top_btn"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentTop="true" />
+
+
+                    <Button
+                        android:id="@+id/top_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:text="More"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:minHeight="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/topmovielistview"
+                    android:visibility="gone"
+                    android:layout_marginTop="-5dp"
+                    android:background="#36807d">
+
+                </LinearLayout>
+
+
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:background="#7e008138"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="21dp"
+                        android:src="@drawable/ic_action_social_whatshot" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/show_hide_recomm_btn"
+                        android:layout_toRightOf="@+id/imageView8"
+                        android:layout_toStartOf="@+id/show_hide_recomm_btn"
+                        android:gravity="center_vertical|left"
+                        android:text="Recomended Movies"
+                        android:textColor="#ffffff"
+                        android:textSize="20dp"
+
+                        />
+                    <Button
+                        android:id="@+id/show_hide_recomm_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+
+                        android:background="@android:color/transparent"
+                        android:text="Show"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+
+                        android:layout_toLeftOf="@+id/recom_btn"
+                        android:layout_toStartOf="@+id/recom_btn"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentTop="true" />
+
+                    <Button
+                        android:id="@+id/recom_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:text="More"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/recommlistview"
+                    android:layout_marginTop="-5dp"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    android:background="#36807d">
+
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</android.support.v4.widget.SlidingPaneLayout>
