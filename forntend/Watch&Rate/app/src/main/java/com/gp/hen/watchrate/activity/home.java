@@ -24,7 +24,6 @@ import com.gp.hen.watchrate.LoadImage;
 import com.gp.hen.watchrate.R;
 import com.gp.hen.watchrate.model.UserEntity;
 
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,23 +39,18 @@ import java.util.Calendar;
 public class home extends Activity {
     //nyt api=key = 28bcb54b06ae2bb40882d7a5e5dba212:4:74287520
     //http://api.nytimes.com/svc/movies/v2/reviews/?query=taken+3&api-key=28bcb54b06ae2bb40882d7a5e5dba212:4:74287520picks.xmls
-    LinearLayout search_content;
-    LinearLayout list_View;
-    LinearLayout global_list_View;
+    LinearLayout search_content, list_View, global_list_View, recomlist, recentlylist, toplist, reveiw_list;
 
     LayoutInflater layoutInflater;
-    View search_card;
-    View review_card;
+    View search_card, review_card, user_card,lastreview_card;
     ArrayList movies_id;
     String Url;
     SlidingPaneLayout mSlidingPanel;
     SlidingPanel slide;
-    LinearLayout recomlist;
-    LinearLayout recentlylist;
-    LinearLayout toplist;
-    Button show_recom, show_recen, show_top;
+    Button show_recom, show_recen,show_recent_review, show_top;
     ProgressDialog prgDialog;
     private SwipeRefreshLayout swipeView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +116,6 @@ public class home extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(home.this, recommend.class);
-
                 startActivity(intent);
             }
         });
@@ -132,20 +125,28 @@ public class home extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(home.this, recentrly.class);
-
                 startActivity(intent);
             }
         });
 
-        Button higherReviwers = (Button) findViewById(R.id.top_btn);
-        higherReviwers.setOnClickListener(new View.OnClickListener() {
+        Button lastreviwes = (Button) findViewById(R.id.recently_rev__btn);
+        lastreviwes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Connect conn = new Connect();
-                conn.tag="higherReviewers";
-                conn.execute(Url + "/higher_reviewers");
+                Intent intent = new Intent(home.this, lastreviews.class);
+                startActivity(intent);
             }
         });
+
+        Button topreviewer = (Button) findViewById(R.id.top_btn);
+        topreviewer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(home.this, topreviewers.class);
+                startActivity(intent);
+            }
+        });
+
 
         movies_id = new ArrayList();
         UserEntity user = UserEntity.getCurrentUser();
@@ -159,6 +160,8 @@ public class home extends Activity {
         layoutInflater = LayoutInflater.from(this);
         search_card = layoutInflater.inflate(R.layout.search_card, null);
         review_card = layoutInflater.inflate(R.layout.review_card, null);
+        lastreview_card = layoutInflater.inflate(R.layout.review_card_user,null);
+        user_card = layoutInflater.inflate(R.layout.user_card, null);
 
         recentlylist = (LinearLayout) findViewById(R.id.recentrlylistview);
 
@@ -174,6 +177,15 @@ public class home extends Activity {
         query = query.replaceAll(" ", "%20");
         conn.execute(query);
 
+        reveiw_list = (LinearLayout) findViewById(R.id.recentrlyreviewslistview);
+
+        conn = new Connect();
+        conn.tag = "review_db";
+        conn.limit = 5;
+        query = "http://watchandrate-fcigp.rhcloud.com/LastReviews";
+        conn.execute(query);
+
+
         recomlist = (LinearLayout) findViewById(R.id.recommlistview);
 
         conn = new Connect();
@@ -184,8 +196,13 @@ public class home extends Activity {
         query = query.replaceAll(" ", "%20");
         conn.execute(query);
 
-        toplist = (LinearLayout) findViewById(R.id.topmovielistview);
-        // code to show top movie
+
+
+        toplist = (LinearLayout) findViewById(R.id.topuserlistview);
+        conn = new Connect();
+        conn.tag="higherReviewers";
+        conn.limit = 5;
+        conn.execute("http://watchandrate-fcigp.rhcloud.com/higher_reviewers");
 
 
         prgDialog = new ProgressDialog(this);
@@ -203,6 +220,20 @@ public class home extends Activity {
                 } else {
                     recentlylist.setVisibility(View.VISIBLE);
                     show_recen.setText("Hide");
+                }
+            }
+        });
+
+        show_recent_review = (Button) findViewById(R.id.show_hide_recen_rev_btn);
+        show_recent_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (reveiw_list.getVisibility() == View.VISIBLE) {
+                    reveiw_list.setVisibility(View.GONE);
+                    show_recent_review.setText("Show");
+                } else {
+                    reveiw_list.setVisibility(View.VISIBLE);
+                    show_recent_review.setText("Hide");
                 }
             }
         });
@@ -329,12 +360,9 @@ public class home extends Activity {
             result = new Connection().sendrequest(strings[0], data);
             return null;
         }
-        // oly en code dh gahz 3shn m7sesh en 7omara :D Asma2 l fun ah bs el content la :v la mo25za wnta 3rft mnnen klam dh
-        // search w mtnsesh ane android developer :P aywa 3rfa :3 bs 3rft 7tt api w klam dh mnen wresult l fo2
-        // de mesh api d code 3ade bta3 t send request w teget data men server msh dh so2ale ma 3lina  hwa fen code servie
 
         protected void onPostExecute(Void unused) {
-            if (tag.equals("movie_api") || tag.equals("review_movie_api")) {
+            if (tag.equals("movie_api") || tag.equals("review_movie_api")||tag.equals("review_db")||tag.equals("higherReviewers")) {
                 System.out.println(result);
                 JSONParser parser = new JSONParser();
                 Object obj = null;
@@ -355,14 +383,20 @@ public class home extends Activity {
                     }
                     for (int i = 0; i < limit; i++) {
                         obj = parser.parse(movies.get(i).toString());
-                        JSONObject film = (JSONObject) obj;
-                        System.out.println(film.toString());
+                        JSONObject json = (JSONObject) obj;
+                        System.out.println(json.toString());
                         if (tag.equals("review_movie_api")) {
-                            movies_id.add(film.get("original_title"));
-                            movies_id.add(film.get("id"));
-                        } else {
-
-                            addToList(film);
+                            movies_id.add(json.get("original_title"));
+                            movies_id.add(json.get("id"));
+                        }
+                        else if (tag.equals("review_db")) {
+                           addlastreviewtolist(json);
+                        }
+                        else if(tag.equals("higherReviewers")){
+                            addusersToList(json);
+                        }
+                        else {
+                            addToList(json);
                         }
                     }
                     prgDialog.hide();
@@ -433,28 +467,26 @@ public class home extends Activity {
                     swipeView.setEnabled(false);
                 }
             }
-            if(tag.equals("higherReviewers"))
-            {
+            if(tag.equals("movie_info")){
+                System.out.println(result);
                 JSONParser parser = new JSONParser();
                 Object obj = null;
-                try
-                {
+                try {
                     obj = parser.parse(result);
-                    JSONObject object = (JSONObject) obj;
-                    if (object.get("status").toString().equals("higherScore")) {
-
-                        Intent intent = new Intent(home.this, view_higher_reviwers.class);
-                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("status", "higherScore");
-                        intent.putExtra("array", result);
-                        //finish();
+                    JSONObject data = (JSONObject) obj;
+                    if(data.get("status").toString().equals("movie")){
+                        Intent intent = new Intent(home.this, movie_info.class);
+                        intent.putExtra("movie",data.toString());
                         startActivity(intent);
                     }
-                    else
-                        Toast.makeText(getApplicationContext(), object.get("status").toString(), Toast.LENGTH_SHORT).show();
-                }
-                catch (ParseException e)
-                {
+                    else{
+                        Toast.makeText(getApplicationContext(),"something wrong ,Try again..", Toast.LENGTH_SHORT).show();
+                        prgDialog.hide();
+                    }
+
+
+
+                } catch (ParseException e) {
                     Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -474,7 +506,9 @@ public class home extends Activity {
         TextView vote_avg = (TextView) search_card.findViewById(R.id.vote_avg);
         LoadImage load = new LoadImage();
         load.Image(mov_img);
+        load.context = home.this;
         load.execute("http://image.tmdb.org/t/p/w300" + film.get("poster_path"));
+
         mov_title.setText("Title : " + film.get("original_title").toString());
         mov_year.setText("Year : " + film.get("release_date").toString());
         vote_count.setText("vote : " + film.get("vote_count").toString());
@@ -506,4 +540,75 @@ public class home extends Activity {
         list_View.addView(review_card);
         review_card = layoutInflater.inflate(R.layout.review_card, null);
     }
+
+   public void addlastreviewtolist(JSONObject review){
+       lastreview_card.setId(Integer.valueOf(review.get("rev_id").toString()));
+       TextView mov_name = (TextView) lastreview_card.findViewById(R.id.movie_title);
+       TextView review_title = (TextView) lastreview_card.findViewById(R.id.review_title);
+       TextView rev_data = (TextView) lastreview_card.findViewById(R.id.review_date);
+       TextView rev_contnet = (TextView) lastreview_card.findViewById(R.id.review_content);
+       TextView review_author = (TextView) lastreview_card.findViewById(R.id.review_author);
+       ImageButton rev_open_mov = (ImageButton) lastreview_card.findViewById(R.id.review_open_mov_btn);
+
+       rev_open_mov.setId(Integer.valueOf(review.get("mov_id").toString()));
+       rev_open_mov.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               System.out.println(view.getId());
+               Connect conn = new Connect();
+               JSONObject jobj = new JSONObject();
+               jobj.put("movieid", view.getId());
+               conn.data = "data=" + jobj.toString();
+               conn.tag="movie_info";
+               conn.execute(Url+"/Get_Info");
+               System.out.println(conn.data);
+           }
+       });
+
+
+       mov_name.setText("Movie : " + review.get("mov_name").toString());
+       review_title.setText("Title : " + review.get("review_title").toString());
+       rev_data.setText("Date : " + review.get("date").toString());
+       review_author.setText("Author : " + review.get("username").toString());
+
+       rev_contnet.setText("Description : " + review.get("content").toString());
+       reveiw_list.addView(lastreview_card);
+
+       lastreview_card.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               System.out.println(view.getId());
+               Intent intent = new Intent(home.this, show_review.class);
+               intent.putExtra("rev_id", view.getId());
+               startActivity(intent);
+
+           }
+       });
+
+       lastreview_card = layoutInflater.inflate(R.layout.review_card_user, null);
+    }
+
+    public void addusersToList(JSONObject user) {
+        user_card.setId(Integer.valueOf(user.get("User_Id").toString()));
+        TextView userName = (TextView) user_card.findViewById(R.id.user_name);
+        TextView userScore = (TextView) user_card.findViewById(R.id.user_score);
+        ImageView userImage = (ImageView) user_card.findViewById(R.id.user_img);
+
+        userName.setText("Name : "+user.get("Name").toString());
+        userScore.setText("Score : "+user.get("Score").toString());
+
+        if(!user.get("Image").equals("none")) {
+            LoadImage load = new LoadImage();
+            load.Image(userImage);
+            load.context= home.this;
+            load.execute("http://watchandrateimage.comxa.com/User_image/" + user.get("Image"));
+        }
+        toplist.addView(user_card);
+
+        user_card = layoutInflater.inflate(R.layout.user_card, null);
+
+    }
+
 }
+
+

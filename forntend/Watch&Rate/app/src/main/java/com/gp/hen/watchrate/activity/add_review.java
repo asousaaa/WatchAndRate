@@ -252,7 +252,7 @@ public class add_review extends Activity {
                 e.printStackTrace();
             }
         } else {
-            prgDialog.hide();
+            prgDialog.dismiss();
             Toast.makeText(getApplicationContext(), "Something wrong ,Try again or try with different photo..", Toast.LENGTH_SHORT).show();
         }
     }
@@ -274,13 +274,16 @@ public class add_review extends Activity {
                 obj = parser.parse(result);
                 JSONObject data = (JSONObject) obj;
                 if (data.get("status").toString().equals("inserted")) {
+                    prgDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Your review inserted successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), data.get("status").toString(), Toast.LENGTH_SHORT).show();
+                    prgDialog.dismiss();
                 }
             } catch (ParseException e) {
                 Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
+                prgDialog.dismiss();
                 e.printStackTrace();
             }
 

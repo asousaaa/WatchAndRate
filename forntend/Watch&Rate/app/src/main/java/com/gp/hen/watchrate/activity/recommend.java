@@ -126,13 +126,14 @@ public class recommend extends Activity
                         JSONObject film = (JSONObject) obj;
                         addToList(film);
                     }
-                    prgDialog.hide();
+                    prgDialog.dismiss();
                     if (movies.size() == 0)
                         Toast.makeText(getApplicationContext(), "no result", Toast.LENGTH_SHORT).show();
                 }
                 catch (ParseException e)
                 {
                     Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
+                    prgDialog.dismiss();
                     e.printStackTrace();
                 }
             }
@@ -150,6 +151,7 @@ public class recommend extends Activity
         TextView vote_avg = (TextView) recommendation_card.findViewById(R.id.vote_avg);
         LoadImage load = new LoadImage();
         load.Image(mov_img);
+        load.context=recommend.this;
         load.execute("http://image.tmdb.org/t/p/w300" + film.get("poster_path"));
         mov_title.setText("Title : " + film.get("original_title").toString());
         mov_year.setText("Year : "+film.get("release_date").toString());

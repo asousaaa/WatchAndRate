@@ -31,14 +31,14 @@ import java.util.Calendar;
 /**
  * Created by noha magdy on 15-Jun-16.
  */
-public class recentrly extends Activity {
-    View recentrly_card;
+public class lastreviews extends Activity {
+    View review_card;
     LayoutInflater layoutInflater;
     LinearLayout list_View;
     SlidingPaneLayout mSlidingPanel;
     SlidingPanel slide;
     ProgressDialog prgDialog;
-
+    String Url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +47,17 @@ public class recentrly extends Activity {
         assert ab != null;
         ab.hide();
 
+        //  Url="http://10.0.3.2:8080/Watch_and_Rate";
+//        Url ="http://192.168.1.6:8080/Watch_and_Rate";
+        Url = "http://watchandrate-fcigp.rhcloud.com";
+
         // <editor-fold defaultstate="collapsed" desc="Sliding Panel Layout and swipeView .">
         // Sliding Panel Layout ( START )
         mSlidingPanel = (SlidingPaneLayout) findViewById(R.id.SlidingPanel);
         mSlidingPanel.setParallaxDistance(200);
 
         slide = new SlidingPanel();
-        slide.setContext(recentrly.this);
+        slide.setContext(lastreviews.this);
         slide.setmSlidingPanel(mSlidingPanel);
         slide.setUser_img((ImageView) findViewById(R.id.slide_user_img));
         slide.setLogout((Button) findViewById(R.id.logout_btn));
@@ -88,20 +92,15 @@ public class recentrly extends Activity {
         prgDialog.show();
 
         layoutInflater = LayoutInflater.from(this);
-        recentrly_card = layoutInflater.inflate(R.layout.search_card, null);
+        review_card = layoutInflater.inflate(R.layout.review_card_user, null);
         list_View = (LinearLayout) findViewById(R.id.userlistView);
 
         TextView header = (TextView) findViewById(R.id.header_title);
-        header.setText("Recently Movies");
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
-        String strDate = mdformat.format(calendar.getTime());
+        header.setText("Recently Reviews");
 
         Connect conn = new Connect();
-        conn.tag = "movie_api";
-        String query = "http://api.themoviedb.org/3/discover/movie?api_key=23386b0753dd348bcb87ab9f516da5d5&sort_by=release_date.desc&primary_release_date.lte=" + strDate;
-        query = query.replaceAll(" ", "%20");
-        conn.execute(query);
+        conn.execute("http://watchandrate-fcigp.rhcloud.com/LastReviews");
+
     }
 
 
@@ -114,7 +113,6 @@ public class recentrly extends Activity {
         }
 
         protected void onPostExecute(Void unused) {
-            if (tag.equals("movie_api")) {
                 JSONParser parser = new JSONParser();
                 Object obj = null;
                 try {
@@ -122,53 +120,70 @@ public class recentrly extends Activity {
                     JSONObject data = (JSONObject) obj;
                     result = data.get("results").toString();
                     obj = parser.parse(result);
-                    JSONArray movies = (JSONArray) obj;
-                    for (int i = 0; i < movies.size(); i++) {
-                        obj = parser.parse(movies.get(i).toString());
-                        JSONObject film = (JSONObject) obj;
-                        addToList(film);
+                    JSONArray reviews = (JSONArray) obj;
+                    for (int i = 0; i < reviews.size(); i++) {
+                        obj = parser.parse(reviews.get(i).toString());
+                        JSONObject review = (JSONObject) obj;
+                        addlastreviewtolist(review);
                     }
                     prgDialog.dismiss();
-                    if (movies.size() == 0)
+                    if (reviews.size() == 0)
                         Toast.makeText(getApplicationContext(), "no result", Toast.LENGTH_SHORT).show();
                 } catch (ParseException e) {
                     Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
                     prgDialog.dismiss();
                     e.printStackTrace();
                 }
-            }
+
         }
     }
 
+    public void addlastreviewtolist(JSONObject review){
+        review_card.setId(Integer.valueOf(review.get("rev_id").toString()));
+        TextView mov_name = (TextView) review_card.findViewById(R.id.movie_title);
+        TextView review_title = (TextView) review_card.findViewById(R.id.review_title);
+        TextView rev_data = (TextView) review_card.findViewById(R.id.review_date);
+        TextView rev_contnet = (TextView) review_card.findViewById(R.id.review_content);
+        TextView review_author = (TextView) review_card.findViewById(R.id.review_author);
+        ImageButton rev_open_mov = (ImageButton) review_card.findViewById(R.id.review_open_mov_btn);
 
-    public void addToList(final JSONObject film) {
-        recentrly_card.setId(Integer.valueOf(film.get("id").toString()));
-        ImageView mov_img = (ImageView) recentrly_card.findViewById(R.id.movie_img);
-        TextView mov_title = (TextView) recentrly_card.findViewById(R.id.movie_title);
-        TextView mov_year = (TextView) recentrly_card.findViewById(R.id.movie_year);
-        TextView vote_count = (TextView) recentrly_card.findViewById(R.id.vote_count);
-        TextView vote_avg = (TextView) recentrly_card.findViewById(R.id.vote_avg);
-        LoadImage load = new LoadImage();
-        load.Image(mov_img);
-        load.context=recentrly.this;
-        load.execute("http://image.tmdb.org/t/p/w300" + film.get("poster_path"));
-        mov_title.setText("Title : " + film.get("original_title").toString());
-        mov_year.setText("Year : " + film.get("release_date").toString());
-        vote_count.setText("vote : " + film.get("vote_count").toString());
-        vote_avg.setText("average : " + film.get("vote_average").toString());
-
-        list_View.addView(recentrly_card);
-
-        final String jsonText = film.toJSONString();
-        recentrly_card.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(recentrly.this, movie_info.class);
-                System.out.println("movie id "+jsonText);
-                intent.putExtra("movie", jsonText);
-                startActivity(intent);
+        rev_open_mov.setId(Integer.valueOf(review.get("mov_id").toString()));
+        rev_open_mov.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(view.getId());
+                Connect conn = new Connect();
+                JSONObject jobj = new JSONObject();
+                jobj.put("movieid", view.getId());
+                conn.data = "data=" + jobj.toString();
+                conn.tag="movie_info";
+                conn.execute(Url+"/Get_Info");
+                System.out.println(conn.data);
             }
         });
 
-        recentrly_card = layoutInflater.inflate(R.layout.search_card, null);
+
+        mov_name.setText("Movie : " + review.get("mov_name").toString());
+        review_title.setText("Title : " + review.get("review_title").toString());
+        rev_data.setText("Date : " + review.get("date").toString());
+        review_author.setText("Author : " + review.get("username").toString());
+
+        rev_contnet.setText("Description : " + review.get("content").toString());
+        list_View.addView(review_card);
+
+        review_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(view.getId());
+                Intent intent = new Intent(lastreviews.this, show_review.class);
+                intent.putExtra("rev_id", view.getId());
+                startActivity(intent);
+
+            }
+        });
+
+        review_card = layoutInflater.inflate(R.layout.review_card_user, null);
     }
+
+
 }

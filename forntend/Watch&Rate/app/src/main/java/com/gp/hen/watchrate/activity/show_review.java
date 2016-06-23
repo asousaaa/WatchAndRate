@@ -193,12 +193,13 @@ public class show_review extends Activity {
                         conn.execute(Url + "/GetComments");
                         System.out.println(conn.data);
                     } else {
-                        prgDialog.hide();
+                        prgDialog.dismiss();
                     }
 
                     if (!data.get("rev_img").toString().equals("none")) {
                         LoadImage load = new LoadImage();
                         load.Image(rev_img);
+                        load.context = show_review.this;
                         load.execute("http://watchandrateimage.comxa.com/post_image/" + data.get("rev_img"));
                     }
 
@@ -214,7 +215,7 @@ public class show_review extends Activity {
                         System.out.println(comment.toString());
                         addCommentToList(comment);
                     }
-                    prgDialog.hide();
+                    prgDialog.dismiss();
                     if (comments.size() == 0) {
                         Toast.makeText(getApplicationContext(), "this reviews don't have any comments.", Toast.LENGTH_SHORT).show();
 
@@ -236,7 +237,7 @@ public class show_review extends Activity {
                 }
             } catch (ParseException e) {
                 Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
-                prgDialog.hide();
+                prgDialog.dismiss();
                 e.printStackTrace();
             }
         }
@@ -256,6 +257,7 @@ public class show_review extends Activity {
             LoadImage load = new LoadImage();
             load.Image(userimage);
             load.tag=1;
+            load.context = getApplicationContext();
             load.execute("http://watchandrateimage.comxa.com/User_image/" + comment.get("userimage").toString());
         }
         List_view.addView(comment_card);

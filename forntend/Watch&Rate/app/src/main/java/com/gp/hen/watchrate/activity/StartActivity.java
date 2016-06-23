@@ -51,6 +51,7 @@ public class StartActivity extends Activity {
         sign_in = (Button) findViewById(R.id.sign_in_button);
         list = (RelativeLayout) findViewById(R.id.listView);
 
+        prgDialog = new ProgressDialog(this);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +90,6 @@ public class StartActivity extends Activity {
                             conn.data = "data=" + jobj.toString();
                             System.out.println(conn.data);
                             conn.execute(Url+"/Sign_up");
-                            prgDialog = new ProgressDialog(getApplicationContext());
                             prgDialog.setMessage("Loading...");
                             prgDialog.setCancelable(false);
                             prgDialog.show();
@@ -135,6 +135,11 @@ public class StartActivity extends Activity {
                         if (email.getText().toString().equals("") || pass.getText().toString().equals("")) {
                             Toast.makeText(getApplicationContext(), "Please fill all boxes", Toast.LENGTH_SHORT).show();
                         } else {
+
+                            prgDialog.setMessage("Loading...");
+                            prgDialog.setCancelable(false);
+                            prgDialog.show();
+
                             Connect conn = new Connect();
                             JSONObject jobj = new JSONObject();
 
@@ -144,10 +149,8 @@ public class StartActivity extends Activity {
                             conn.data = "data=" + jobj.toString();
                             conn.execute(Url+"/Sign_in");
 
-                            prgDialog = new ProgressDialog(StartActivity.this);
-                            prgDialog.setMessage("Loading...");
-                            prgDialog.setCancelable(false);
-                            prgDialog.show();
+
+
                         }
 
                     }
@@ -176,12 +179,12 @@ public class StartActivity extends Activity {
                 JSONObject object = (JSONObject) obj;
                 if (object.get("status").toString().equals("done")) {
                     Toast.makeText(getApplicationContext(), "your account added ,Now you can use our app after login", Toast.LENGTH_SHORT).show();
-                    prgDialog.hide();
+                    prgDialog.dismiss();
                 }
                 else if (object.get("status").toString().equals("login")) {
                     UserEntity activeuser= UserEntity.getCurrentUser();
                     activeuser.setCurrentUser(object);
-                    prgDialog.hide();
+                    prgDialog.dismiss();
                     Intent intent = new Intent(StartActivity.this, home.class);
                     finish();
                     startActivity(intent);
@@ -189,12 +192,12 @@ public class StartActivity extends Activity {
                 }
                 else {
                     Toast.makeText(getApplicationContext(), object.get("status").toString(), Toast.LENGTH_SHORT).show();
-                    prgDialog.hide();
+                    prgDialog.dismiss();
                 }
             } catch (ParseException e) {
                 Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
-                prgDialog.hide();
+                prgDialog.dismiss();
 
             }
         }

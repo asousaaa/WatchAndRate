@@ -234,7 +234,7 @@ public class user_reviews extends Activity {
         mov_name.setText("Movie : "+review.get("mov_name").toString());
         review_title.setText("Title : "+review.get("review_title").toString());
         rev_data.setText("Date : "+review.get("date").toString());
-        rev_contnet.setText("Description : \n"+review.get("content").toString());
+        rev_contnet.setText("Description : "+review.get("content").toString());
         list_View.addView(review_card);
 
         review_card.setOnClickListener(new View.OnClickListener() {

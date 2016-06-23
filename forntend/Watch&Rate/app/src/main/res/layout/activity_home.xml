@@ -210,7 +210,7 @@
                         android:layout_toRightOf="@+id/imageView8"
                         android:layout_toStartOf="@+id/show_hide_recen_btn"
                         android:gravity="center_vertical|left"
-                        android:text="Recently  Movies"
+                        android:text="Recently Movies"
                         android:textColor="#ffffff"
                         android:textSize="20dp"
 
@@ -259,6 +259,80 @@
 
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:background="#7e008138"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="21dp"
+                        android:src="@drawable/ic_action_action_query_builder" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/show_hide_recen_rev_btn"
+                        android:layout_toRightOf="@+id/imageView8"
+                        android:layout_toStartOf="@+id/show_hide_recen_rev_btn"
+                        android:gravity="center_vertical|left"
+                        android:text="Recently Reviews"
+                        android:textColor="#ffffff"
+                        android:textSize="20dp"
+
+                        />
+
+                    <Button
+                        android:id="@+id/show_hide_recen_rev_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+
+                        android:background="@android:color/transparent"
+                        android:text="Show"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+
+                        android:layout_toLeftOf="@+id/recently_rev__btn"
+                        android:layout_toStartOf="@+id/recently_rev__btn"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentTop="true" />
+                    <Button
+                        android:id="@+id/recently_rev__btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@android:color/transparent"
+                        android:text="More"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentTop="true" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="-5dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:id="@+id/recentrlyreviewslistview"
+                    android:background="#36807d">
+
+                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -286,7 +360,7 @@
                         android:layout_toRightOf="@+id/imageView8"
                         android:layout_toStartOf="@+id/show_hide_top_btn"
                         android:gravity="center_vertical|left"
-                        android:text="Top Movies"
+                        android:text="Top Reviewers"
                         android:textColor="#ffffff"
                         android:textSize="20dp"
 
@@ -331,7 +405,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:id="@+id/topmovielistview"
+                    android:orientation="vertical"
+                    android:id="@+id/topuserlistview"
                     android:visibility="gone"
                     android:layout_marginTop="-5dp"
                     android:background="#36807d">

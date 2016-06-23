@@ -73,6 +73,7 @@ public class SlidingPanel extends Activity {
             LoadImage load = new LoadImage();
             load.Image(user_img);
             load.tag=1;
+            load.context = context;
             load.execute("http://watchandrateimage.comxa.com/User_image/" + activuser.getImage());
         }
         user_name.setText(activuser.getName());

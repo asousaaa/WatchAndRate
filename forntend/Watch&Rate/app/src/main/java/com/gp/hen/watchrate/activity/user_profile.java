@@ -120,6 +120,7 @@ public class user_profile extends Activity {
             LoadImage load = new LoadImage();
             load.Image(userimage);
             load.tag=1;
+            load.context = user_profile.this;
             load.execute("http://watchandrateimage.comxa.com/User_image/" + user.getImage());
         }
 
@@ -235,7 +236,7 @@ public class user_profile extends Activity {
             System.out.println(conn.data);
         }
         else{
-            prgDialog.hide();
+            prgDialog.dismiss();
             Toast.makeText(getApplicationContext(), "Something wrong ,Try again or try with different photo..", Toast.LENGTH_SHORT).show();
         }
     }
@@ -263,13 +264,15 @@ public class user_profile extends Activity {
                     user.setEmail(email.getText().toString());
                     user.setPass(pass.getText().toString());
                     slide.init();
-                    prgDialog.hide();
+                    prgDialog.dismiss();
                 }
                 if (object.get("status").toString().equals("failed")) {
                     Toast.makeText(getApplicationContext(), "Something wrong ,Try again..", Toast.LENGTH_SHORT).show();
+                    prgDialog.dismiss();
                 }
                 if (object.get("status").toString().equals("deleted")) {
                     Toast.makeText(getApplicationContext(), "Account deleted sorry for say that :D don't come back again :P", Toast.LENGTH_SHORT).show();
+                    prgDialog.dismiss();
                     Intent intent = new Intent(user_profile.this, StartActivity.class);
                     finish();
                     startActivity(intent);
@@ -279,6 +282,7 @@ public class user_profile extends Activity {
 
             } catch (ParseException e) {
                 Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
+                prgDialog.dismiss();
                 e.printStackTrace();
             }
         }

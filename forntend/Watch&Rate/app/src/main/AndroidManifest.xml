@@ -106,7 +106,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.view_reviews"
+            android:name=".activity.lastreviews"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
@@ -116,7 +116,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.view_higher_reviwers"
+            android:name=".activity.topreviewers"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
