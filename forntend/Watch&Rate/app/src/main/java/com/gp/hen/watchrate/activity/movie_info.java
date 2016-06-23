@@ -137,6 +137,7 @@ public class movie_info extends Activity {
                 Connect conn = new Connect();
                 JSONObject obj = new JSONObject();
                 obj.put("movieid", json.get("id").toString());
+                //System.out.print(json.get("id").toString());
                 conn.data = "data=" + obj.toString();
                 conn.execute(Url + "/ViewReviews");
                 prgDialog.show();
@@ -168,6 +169,7 @@ public class movie_info extends Activity {
 
         protected Void doInBackground(String... strings) {
             result = new Connection().sendrequest(strings[0], data);
+
             return null;
         }
 
@@ -175,16 +177,20 @@ public class movie_info extends Activity {
 
             JSONParser parser = new JSONParser();
             Object obj = null;
-            try {
+            try
+            {
                 obj = parser.parse(result);
-
                 JSONObject object = (JSONObject) obj;
-                if (object.get("status").toString().equals("reviewlist")) {
+                if (object.get("status").toString().equals("reviewlist"))
+                {
+                    Intent intent = new Intent(movie_info.this, view_reviews.class);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("status", "reviewlist");
+                    intent.putExtra("array", result);
+                    startActivity(intent);
 
-                    result = object.get("results").toString();
-
-                    obj = parser.parse(result);
-                    JSONArray reviews = (JSONArray) obj;
+                    //hena bydrab
+                    /*JSONArray reviews = (JSONArray) obj;
                     for (int i = 0; i < reviews.size(); i++) {
                         obj = parser.parse(reviews.get(i).toString());
                         JSONObject review = (JSONObject) obj;
@@ -192,13 +198,19 @@ public class movie_info extends Activity {
                         addReviewToList(review);
                     }
                     prgDialog.hide();
-                    if (reviews.size() == 0) {
+                    if (reviews.size() == 0)
                         Toast.makeText(getApplicationContext(), "You don't have any reviews yet, please write some reviews", Toast.LENGTH_SHORT).show();
-
-                    }
-                } else
+                    */
+                }
+                else
+                {
                     Toast.makeText(getApplicationContext(), object.get("status").toString(), Toast.LENGTH_SHORT).show();
-            } catch (ParseException e) {
+                    prgDialog.hide();
+                }
+            }
+            catch (ParseException e)
+            {
+                prgDialog.hide();
                 Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }

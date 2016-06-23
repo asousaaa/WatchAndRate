@@ -137,6 +137,15 @@ public class home extends Activity {
             }
         });
 
+        Button higherReviwers = (Button) findViewById(R.id.top_btn);
+        higherReviwers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Connect conn = new Connect();
+                conn.tag="higherReviewers";
+                conn.execute(Url + "/higher_reviewers");
+            }
+        });
 
         movies_id = new ArrayList();
         UserEntity user = UserEntity.getCurrentUser();
@@ -422,6 +431,32 @@ public class home extends Activity {
                     System.out.println("false ");
                     swipeView.setRefreshing(false);
                     swipeView.setEnabled(false);
+                }
+            }
+            if(tag.equals("higherReviewers"))
+            {
+                JSONParser parser = new JSONParser();
+                Object obj = null;
+                try
+                {
+                    obj = parser.parse(result);
+                    JSONObject object = (JSONObject) obj;
+                    if (object.get("status").toString().equals("higherScore")) {
+
+                        Intent intent = new Intent(home.this, view_higher_reviwers.class);
+                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("status", "higherScore");
+                        intent.putExtra("array", result);
+                        //finish();
+                        startActivity(intent);
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), object.get("status").toString(), Toast.LENGTH_SHORT).show();
+                }
+                catch (ParseException e)
+                {
+                    Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             }
 
