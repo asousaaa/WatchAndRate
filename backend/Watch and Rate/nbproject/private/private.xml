@@ -6,10 +6,9 @@
             <file>file:/C:/Users/hosam%20azzam/Documents/NetBeansProjects/FCI%20Level%204/Watch%20and%20Rate/src/java/Controller/Review/DeleteReview.java</file>
         </group>
         <group>
-            <file>file:/D:/Graduation%20project/work%20folder/backend/Watch%20and%20Rate/src/java/Models/UserEntity.java</file>
-            <file>file:/D:/Graduation%20project/work%20folder/backend/Watch%20and%20Rate/src/java/Controller/Review/ViewReviews.java</file>
-            <file>file:/D:/Graduation%20project/work%20folder/backend/Watch%20and%20Rate/src/java/Controller/User/Higher_reviewer.java</file>
-            <file>file:/D:/Graduation%20project/work%20folder/backend/Watch%20and%20Rate/src/java/Models/Sql.java</file>
+            <file>file:/D:/Graduation%20project/tempFolder/backend/Watch%20and%20Rate/src/java/Models/CommentEntity.java</file>
+            <file>file:/D:/Graduation%20project/tempFolder/backend/Watch%20and%20Rate/src/java/Models/ReviewEntity.java</file>
+            <file>file:/D:/Graduation%20project/tempFolder/backend/Watch%20and%20Rate/src/java/Models/Sql.java</file>
         </group>
     </open-files>
 </project-private>

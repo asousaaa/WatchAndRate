@@ -142,6 +142,40 @@ public class ReviewEntity {
 
         return ret;
     }
+	
+	public JSONObject getReview(JSONObject json) {
+        
+        JSONObject ret = new JSONObject();
+        try {
+            sql.open();
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * FROM  review where  REVIEW_ID = " + json.get("reviewid") + " ");
+            
+            boolean flage = false;
+            while (sql.ResStetmnt.next()) {
+                flage = true;
+
+                int mov_id = sql.ResStetmnt.getInt("MOVIE_ID");
+                MovieEntity moiveEntity = new MovieEntity();
+
+                String mov_name = moiveEntity.getmovie(mov_id);
+                USER_ID = sql.ResStetmnt.getInt("USER_ID");
+                TITLE = sql.ResStetmnt.getString("TITLE");
+                ret.put("user_id", USER_ID);
+                ret.put("title", TITLE);
+                ret.put("movie_id", mov_id);
+                ret.put("movie_name", mov_name);
+
+            }
+            sql.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ret.put("status", "something wrong ,Try again..");
+        }
+
+        return ret;
+    }
 
     public JSONObject deleteReview(JSONObject json) {
 

@@ -104,11 +104,35 @@ public class CommentEntity {
 
         try {
             sql.open();
+            System.out.println("entered");
             sql.Stetmnt = sql.Conection.createStatement();
             sql.Stetmnt.executeUpdate("INSERT INTO comment(COMMENT_CONTENT,HASURL,USER_ID,REVIEW_ID) VALUES ('"
                     + json.get("content") + "'," + json.get("hasurl") + "," + json.get("userid") + "," + json.get("revid")
                     + ")");
 
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT LAST_INSERT_ID() as last_id from comment");
+
+            while (sql.ResStetmnt.next()) {
+                COMMENT_ID = sql.ResStetmnt.getInt("last_id");
+
+            }
+
+            sql.close();
+
+            ReviewEntity re = new ReviewEntity();
+            JSONObject obj = new JSONObject();
+            obj.put("reviewid", json.get("revid"));
+            int recieverID = (int) re.getReview(obj).get("user_id");
+            int senderID = Integer.parseInt(json.get("userid").toString());
+
+            if (senderID != recieverID) {
+                sql.open();
+                sql.Stetmnt = sql.Conection.createStatement();
+                sql.Stetmnt.executeUpdate("INSERT INTO notification (USER_ID_SENDER, USER_ID_RECIEVER, RECIEVED, REVIEW_ID, COMMENT_ID, USER_ID)VALUES  ("
+                        + json.get("userid") + "," + recieverID + "," + 0 + "," + json.get("revid") + "," + COMMENT_ID + "," + json.get("userid") + ")");
+                sql.close();
+            }
             ret.put("status", "inserted");
 
         } catch (SQLException ex) {
