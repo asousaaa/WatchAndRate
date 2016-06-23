@@ -1,7 +1,6 @@
 package Models;
 
 import java.sql.*;
-import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -16,82 +15,59 @@ import org.json.simple.JSONObject;
  */
 public class ReviewEntity {
 
-    private int reviewId;
-    private String title;
-    private String Body;
-    private String systemRate;
-    private int userID;
-    private String date;
-    private ArrayList<RateEntity> rate;
-    private ArrayList<CommentEntity> comment;
+    private int REVIEW_ID;
+    private String TITLE;
+    private String REVIEW_CONTENT;
+    private float STAR_RATE;
+    private int USER_ID;
+    private int ENABLE_COMMENT;
+    private String IMAGE_REVIEW;
+    private int MOVIE_ID;
+    private String DATE;
     private Sql sql;
 
     public ReviewEntity() {
         sql = new Sql();
     }
 
-    public int getReviewId() {
-        return reviewId;
+    public int getREVIEW_ID() {
+        return REVIEW_ID;
     }
 
-    public void setReviewId(int reviewId) {
-        this.reviewId = reviewId;
+    public void setREVIEW_ID(int REVIEW_ID) {
+        this.REVIEW_ID = REVIEW_ID;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTITLE() {
+        return TITLE;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTITLE(String TITLE) {
+        this.TITLE = TITLE;
     }
 
-    public String getBody() {
-        return Body;
+    public String getREVIEW_CONTENT() {
+        return REVIEW_CONTENT;
     }
 
-    public void setBody(String Body) {
-        this.Body = Body;
+    public void setREVIEW_CONTENT(String REVIEW_CONTENT) {
+        this.REVIEW_CONTENT = REVIEW_CONTENT;
     }
 
-    public String getSystemRate() {
-        return systemRate;
+    public int getUSER_ID() {
+        return USER_ID;
     }
 
-    public void setSystemRate(String systemRate) {
-        this.systemRate = systemRate;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public ArrayList<RateEntity> getRate() {
-        return rate;
-    }
-
-    public void setRate(ArrayList<RateEntity> rate) {
-        this.rate = rate;
-    }
-
-    public ArrayList<CommentEntity> getComment() {
-        return comment;
-    }
-
-    public void setComment(ArrayList<CommentEntity> comment) {
-        this.comment = comment;
+    public void setUSER_ID(int USER_ID) {
+        this.USER_ID = USER_ID;
     }
 
     public String getDate() {
-        return date;
+        return DATE;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.DATE = date;
     }
 
     public JSONObject getUserReviews(JSONObject json) {
@@ -102,28 +78,26 @@ public class ReviewEntity {
             sql.open();
 
             sql.Stetmnt = sql.Conection.createStatement();
-            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from review where  USER_ID= " + json.get("userid") + " ");
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from review where  USER_ID= " + json.get("userid") + " order by DATE desc ");
 
-            boolean flage = false;
             while (sql.ResStetmnt.next()) {
-                flage = true;
 
                 JSONObject review = new JSONObject();
-                title = sql.ResStetmnt.getString("TITLE");
-                reviewId = sql.ResStetmnt.getInt("REVIEW_ID");
-                date = sql.ResStetmnt.getString("DATE");
-                Body = sql.ResStetmnt.getString("REVIEW_CONTENT");
-                int mov_id = sql.ResStetmnt.getInt("MOVIE_ID");
+                TITLE = sql.ResStetmnt.getString("TITLE");
+                REVIEW_ID = sql.ResStetmnt.getInt("REVIEW_ID");
+                DATE = sql.ResStetmnt.getString("DATE");
+                REVIEW_CONTENT = sql.ResStetmnt.getString("REVIEW_CONTENT");
+                MOVIE_ID = sql.ResStetmnt.getInt("MOVIE_ID");
                 MovieEntity moiveEntity = new MovieEntity();
 
-                String mov_name = moiveEntity.getmovie(mov_id);
+                String mov_name = moiveEntity.getmovie(MOVIE_ID);
 
-                review.put("content", Body);
+                review.put("content", REVIEW_CONTENT);
                 review.put("mov_name", mov_name);
-                review.put("date", date);
-                review.put("review_title", title);
-                review.put("mov_id", mov_id);
-                review.put("rev_id", reviewId);
+                review.put("date", DATE);
+                review.put("review_title", TITLE);
+                review.put("mov_id", MOVIE_ID);
+                review.put("rev_id", REVIEW_ID);
                 list.add(review);
 
             }
@@ -148,7 +122,7 @@ public class ReviewEntity {
             try {
 
                 sql.open();
-                System.out.println("entered");
+                
                 sql.Stetmnt = sql.Conection.createStatement();
                 sql.Stetmnt.executeUpdate("INSERT INTO review(TITLE,REVIEW_CONTENT ,IMAGE_REVIEW,STAR_RATE,USER_ID,MOVIE_ID,DATE,ENABLE_COMMENT) VALUES ('"
                         + json.get("title") + "','" + json.get("content") + "','" + json.get("image") + "','" + json.get("rate") + "','"
@@ -196,35 +170,33 @@ public class ReviewEntity {
             sql.open();
 
             sql.Stetmnt = sql.Conection.createStatement();
-            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from review where  MOVIE_ID= " + json.get("movieid") + " ");
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from review where  MOVIE_ID= " + json.get("movieid") + " order by DATE desc ");
 
-            boolean flage = false;
             while (sql.ResStetmnt.next()) {
-                flage = true;
 
                 JSONObject review = new JSONObject();
-                title = sql.ResStetmnt.getString("TITLE");
-                reviewId = sql.ResStetmnt.getInt("REVIEW_ID");
-                date = sql.ResStetmnt.getString("DATE");
-                Body = sql.ResStetmnt.getString("REVIEW_CONTENT");
-                userID = sql.ResStetmnt.getInt("USER_ID");
+                TITLE = sql.ResStetmnt.getString("TITLE");
+                REVIEW_ID = sql.ResStetmnt.getInt("REVIEW_ID");
+                DATE = sql.ResStetmnt.getString("DATE");
+                REVIEW_CONTENT = sql.ResStetmnt.getString("REVIEW_CONTENT");
+                USER_ID = sql.ResStetmnt.getInt("USER_ID");
 
                 UserEntity user = new UserEntity();
-                String user_name = user.getUsername(userID);
+                String user_name = user.getUsername(USER_ID);
 
                 int mov_id = sql.ResStetmnt.getInt("MOVIE_ID");
                 MovieEntity moiveEntity = new MovieEntity();
 
                 String mov_name = moiveEntity.getmovie(mov_id);
 
-                review.put("content", Body);
+                review.put("content", REVIEW_CONTENT);
                 review.put("mov_name", mov_name);
-                review.put("date", date);
-                review.put("userid", userID);
+                review.put("date", DATE);
+                review.put("userid", USER_ID);
                 review.put("username", user_name);
-                review.put("review_title", title);
+                review.put("review_title", TITLE);
                 review.put("mov_id", mov_id);
-                review.put("rev_id", reviewId);
+                review.put("rev_id", REVIEW_ID);
                 list.add(review);
 
             }
@@ -249,36 +221,36 @@ public class ReviewEntity {
             sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from review where  REVIEW_ID= " + json.get("rev_id") + " ");
 
             if (sql.ResStetmnt.next()) {
-                title = sql.ResStetmnt.getString("TITLE");
-                reviewId = sql.ResStetmnt.getInt("REVIEW_ID");
-                date = sql.ResStetmnt.getString("DATE");
-                Body = sql.ResStetmnt.getString("REVIEW_CONTENT");
-
-                userID = sql.ResStetmnt.getInt("USER_ID");
+                TITLE = sql.ResStetmnt.getString("TITLE");
+                REVIEW_ID = sql.ResStetmnt.getInt("REVIEW_ID");
+                DATE = sql.ResStetmnt.getString("DATE");
+                REVIEW_CONTENT = sql.ResStetmnt.getString("REVIEW_CONTENT");
+                STAR_RATE = sql.ResStetmnt.getFloat("STAR_RATE");
+                ENABLE_COMMENT =  sql.ResStetmnt.getInt("ENABLE_COMMENT");
+                IMAGE_REVIEW = sql.ResStetmnt.getString("IMAGE_REVIEW");
+                USER_ID = sql.ResStetmnt.getInt("USER_ID");
 
                 UserEntity user = new UserEntity();
-                String user_name = user.getUsername(userID);
+                String user_name = user.getUsername(USER_ID);
 
-                int mov_id = sql.ResStetmnt.getInt("MOVIE_ID");
+                MOVIE_ID = sql.ResStetmnt.getInt("MOVIE_ID");
                 MovieEntity moiveEntity = new MovieEntity();
 
-                String mov_name = moiveEntity.getmovie(mov_id);
+                String mov_name = moiveEntity.getmovie(MOVIE_ID);
 
-                ret.put("content", Body);
+                ret.put("content", REVIEW_CONTENT);
                 ret.put("mov_name", mov_name);
-                ret.put("date", date);
-                ret.put("userid", userID);
+                ret.put("date", DATE);
+                ret.put("userid", USER_ID);
                 ret.put("username", user_name);
-                ret.put("review_title", title);
-                ret.put("review_rate", sql.ResStetmnt.getFloat("STAR_RATE"));
-                ret.put("mov_id", mov_id);
-                ret.put("rev_id", reviewId);
-                ret.put("rev_comment", sql.ResStetmnt.getInt("ENABLE_COMMENT"));
-                ret.put("rev_img", sql.ResStetmnt.getString("IMAGE_REVIEW"));
- ret.put("status", "reviewinfo");
+                ret.put("review_title", TITLE);
+                ret.put("review_rate", STAR_RATE);
+                ret.put("mov_id", MOVIE_ID);
+                ret.put("rev_id", REVIEW_ID);
+                ret.put("rev_comment", ENABLE_COMMENT);
+                ret.put("rev_img", IMAGE_REVIEW);
+                ret.put("status", "reviewinfo");
             }
-            
-           
 
         } catch (SQLException ex) {
             ex.printStackTrace();

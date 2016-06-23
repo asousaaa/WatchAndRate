@@ -15,12 +15,20 @@ import org.json.simple.JSONObject;
  */
 public class MovieEntity {
 
-    private int Moive_ID;
-    private String Name;
-    private String Year;
-    private String Description;
-    private double calculatedRate;
-    private ArrayList<ReviewEntity> review;
+    private int MOVIE_ID;
+    private int API_ID;
+    private String MOVIENAME;
+    private String YEAR;
+    private String TYPE;
+    private String DESCRIPTION;
+    private String MOVIEIMAGE;
+    private double RATESYSTEM;
+    private int VOTE_COUNT;
+    private String Story;
+    private String Direction;
+    private String Acting;
+    private String Motion;
+    private String Music;
     private Sql sql;
 
     public MovieEntity() {
@@ -28,52 +36,44 @@ public class MovieEntity {
 
     }
 
-    public int getMoive_ID() {
-        return Moive_ID;
+    public int getMOVIE_ID() {
+        return MOVIE_ID;
     }
 
-    public void setMoive_ID(int Moive_ID) {
-        this.Moive_ID = Moive_ID;
+    public void setMOVIE_ID(int MOVIE_ID) {
+        this.MOVIE_ID = MOVIE_ID;
     }
 
-    public String getName() {
-        return Name;
+    public String getMOVIENAME() {
+        return MOVIENAME;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setMOVIENAME(String MOVIENAME) {
+        this.MOVIENAME = MOVIENAME;
     }
 
-    public String getYear() {
-        return Year;
+    public String getYEAR() {
+        return YEAR;
     }
 
-    public void setYear(String Year) {
-        this.Year = Year;
+    public void setYEAR(String YEAR) {
+        this.YEAR = YEAR;
     }
 
-    public String getDescription() {
-        return Description;
+    public String getDESCRIPTION() {
+        return DESCRIPTION;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDESCRIPTION(String DESCRIPTION) {
+        this.DESCRIPTION = DESCRIPTION;
     }
 
-    public double getCalculatedRate() {
-        return calculatedRate;
+    public double getRATESYSTEM() {
+        return RATESYSTEM;
     }
 
-    public void setCalculatedRate(double calculatedRate) {
-        this.calculatedRate = calculatedRate;
-    }
-
-    public ArrayList<ReviewEntity> getReview() {
-        return review;
-    }
-
-    public void setReview(ArrayList<ReviewEntity> review) {
-        this.review = review;
+    public void setRATESYSTEM(double RATESYSTEM) {
+        this.RATESYSTEM = RATESYSTEM;
     }
 
     public String getmovie(int mov_id) {
@@ -84,21 +84,20 @@ public class MovieEntity {
             sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from movie where API_ID=" + mov_id + " ");
 
             if (sql.ResStetmnt.next()) {
-                Name = sql.ResStetmnt.getString("MOVIENAME");
-            }
-            else{
-                Name="";
+                MOVIENAME = sql.ResStetmnt.getString("MOVIENAME");
+            } else {
+                MOVIENAME = "";
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
 
         }
-        return Name;
+        return MOVIENAME;
     }
 
     boolean insertmovie(JSONObject json) throws SQLException {
         try {
-            System.out.println("entered ");
+          
             sql.open();
 
             if (!getmovie(Integer.valueOf(json.get("movieid").toString())).equals("")) {

@@ -38,12 +38,12 @@ public class Sign_in extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             if(ret.get("status").toString().equals("login")){
-                ret.put("userid",user.getUser_Id());
-                ret.put("name",user.getName());
-                ret.put("email",user.getEmail());
-                ret.put("pass",user.getPass());
-                ret.put("score",user.getScore());
-                ret.put("image",user.getImage());
+                ret.put("userid",user.getUSER_ID());
+                ret.put("name",user.getUSERNAME());
+                ret.put("email",user.getEMAIL());
+                ret.put("pass",user.getPASS());
+                ret.put("score",user.getSCORE());
+                ret.put("image",user.getUSERIMAGE());
             }
             /* TODO output your page here. You may use following sample code. */
            out.println(ret.toJSONString());  

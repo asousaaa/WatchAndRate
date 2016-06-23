@@ -15,46 +15,47 @@ import org.json.simple.JSONObject;
  */
 public class CommentEntity {
 
-    private int commentID;
-    private String Body;
-    private int UserID;
-    private int reviewerID;
+    private int COMMENT_ID;
+    private String COMMENT_CONTENT;
+    private int USER_ID;
+    private int REVIEW_ID;
+    private int HASURL;
     private Sql sql;
 
     public CommentEntity() {
         sql = new Sql();
     }
 
-    public int getCommentID() {
-        return commentID;
+    public int getCOMMENT_ID() {
+        return COMMENT_ID;
     }
 
-    public void setCommentID(int commentID) {
-        this.commentID = commentID;
+    public void setCOMMENT_ID(int COMMENT_ID) {
+        this.COMMENT_ID = COMMENT_ID;
     }
 
-    public String getBody() {
-        return Body;
+    public String getCOMMENT_CONTENT() {
+        return COMMENT_CONTENT;
     }
 
-    public void setBody(String Body) {
-        this.Body = Body;
+    public void setCOMMENT_CONTENT(String COMMENT_CONTENT) {
+        this.COMMENT_CONTENT = COMMENT_CONTENT;
     }
 
-    public int getUserID() {
-        return UserID;
+    public int getUSER_ID() {
+        return USER_ID;
     }
 
-    public void setUserID(int UserID) {
-        this.UserID = UserID;
+    public void setUSER_ID(int USER_ID) {
+        this.USER_ID = USER_ID;
     }
 
-    public int getReviewerID() {
-        return reviewerID;
+    public int getREVIEW_ID() {
+        return REVIEW_ID;
     }
 
-    public void setReviewerID(int reviewerID) {
-        this.reviewerID = reviewerID;
+    public void setREVIEW_ID(int REVIEW_ID) {
+        this.REVIEW_ID = REVIEW_ID;
     }
 
     public JSONObject getcommentList(JSONObject json) {
@@ -67,9 +68,9 @@ public class CommentEntity {
             sql.Stetmnt = sql.Conection.createStatement();
             sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from comment where  REVIEW_ID= " + json.get("rev_id") + " ");
 
-            boolean flage = false;
+ 
             while (sql.ResStetmnt.next()) {
-                flage = true;
+          
                 JSONObject review = new JSONObject();
 
                 UserEntity user = new UserEntity();
@@ -103,7 +104,6 @@ public class CommentEntity {
 
         try {
             sql.open();
-            System.out.println("entered");
             sql.Stetmnt = sql.Conection.createStatement();
             sql.Stetmnt.executeUpdate("INSERT INTO comment(COMMENT_CONTENT,HASURL,USER_ID,REVIEW_ID) VALUES ('"
                     + json.get("content") + "'," + json.get("hasurl") + "," + json.get("userid") + "," + json.get("revid")

@@ -17,41 +17,40 @@ import org.json.simple.JSONObject;
  */
 public class UserEntity {
 
-    private int User_Id;
-    private String Name;
-    private String Email;
-    private String Pass;
-    private double Score;
-    private String image;
-    private ArrayList<ReviewEntity> review;
+    private int USER_ID;
+    private String USERNAME;
+    private String EMAIL;
+    private String PASS;
+    private double SCORE;
+    private String USERIMAGE;
     private Sql sql;
 
     public UserEntity() {
         sql = new Sql();
     }
 
-    public int getUser_Id() {
-        return User_Id;
+    public int getUSER_ID() {
+        return USER_ID;
     }
 
-    public String getName() {
-        return Name;
+    public String getUSERNAME() {
+        return USERNAME;
     }
 
-    public String getEmail() {
-        return Email;
+    public String getEMAIL() {
+        return EMAIL;
     }
 
-    public String getPass() {
-        return Pass;
+    public String getPASS() {
+        return PASS;
     }
 
-    public double getScore() {
-        return Score;
+    public double getSCORE() {
+        return SCORE;
     }
 
-    public String getImage() {
-        return image;
+    public String getUSERIMAGE() {
+        return USERIMAGE;
     }
 
     public String saveUser(JSONObject json) {
@@ -80,12 +79,12 @@ public class UserEntity {
             sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from user where EMAIL='" + json.get("email") + "' and PASS='" + json.get("pass") + "'");
 
             if (sql.ResStetmnt.next()) {
-                User_Id = sql.ResStetmnt.getInt("USER_ID");
-                Email = sql.ResStetmnt.getString("EMAIL");
-                Pass = sql.ResStetmnt.getString("PASS");
-                image = sql.ResStetmnt.getString("USERIMAGE");
-                Name = sql.ResStetmnt.getString("USERNAME");
-                Score = sql.ResStetmnt.getDouble("SCORE");
+                USER_ID = sql.ResStetmnt.getInt("USER_ID");
+                EMAIL = sql.ResStetmnt.getString("EMAIL");
+                PASS = sql.ResStetmnt.getString("PASS");
+                USERIMAGE = sql.ResStetmnt.getString("USERIMAGE");
+                USERNAME = sql.ResStetmnt.getString("USERNAME");
+                SCORE = sql.ResStetmnt.getDouble("SCORE");
                 ret.put("status", "login");
             } else {
                 ret.put("status", "something wrong ,Try again..");
@@ -156,19 +155,22 @@ public class UserEntity {
             sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from user where USER_ID=" +userID + " ");
 
             if (sql.ResStetmnt.next()) {
-                User_Id = sql.ResStetmnt.getInt("USER_ID");
-                Email = sql.ResStetmnt.getString("EMAIL");
-                Pass = sql.ResStetmnt.getString("PASS");
-                image = sql.ResStetmnt.getString("USERIMAGE");
-                Name = sql.ResStetmnt.getString("USERNAME");
-                Score = sql.ResStetmnt.getDouble("SCORE");
+                USER_ID = sql.ResStetmnt.getInt("USER_ID");
+                EMAIL = sql.ResStetmnt.getString("EMAIL");
+                PASS = sql.ResStetmnt.getString("PASS");
+                USERIMAGE = sql.ResStetmnt.getString("USERIMAGE");
+                USERNAME = sql.ResStetmnt.getString("USERNAME");
+                SCORE = sql.ResStetmnt.getDouble("SCORE");
                
+            }
+            else{
+                USERNAME="";
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
            
         }
-        return Name;
+        return USERNAME;
     }
     String getUserimage(int userID) {
        
@@ -178,23 +180,26 @@ public class UserEntity {
             sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from user where USER_ID=" +userID + " ");
 
             if (sql.ResStetmnt.next()) {
-                User_Id = sql.ResStetmnt.getInt("USER_ID");
-                Email = sql.ResStetmnt.getString("EMAIL");
-                Pass = sql.ResStetmnt.getString("PASS");
-                image = sql.ResStetmnt.getString("USERIMAGE");
-                Name = sql.ResStetmnt.getString("USERNAME");
-                Score = sql.ResStetmnt.getDouble("SCORE");
+                USER_ID = sql.ResStetmnt.getInt("USER_ID");
+                EMAIL = sql.ResStetmnt.getString("EMAIL");
+                PASS = sql.ResStetmnt.getString("PASS");
+                USERIMAGE = sql.ResStetmnt.getString("USERIMAGE");
+                USERNAME = sql.ResStetmnt.getString("USERNAME");
+                SCORE = sql.ResStetmnt.getDouble("SCORE");
                
+            }
+            else{
+                USERIMAGE="none";
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
            
         }
-        return image;
+        return USERIMAGE;
     }
     
     
-     public JSONObject getHigherReviewers() {
+    public JSONObject getHigherReviewers() {
      JSONObject res = new JSONObject();
        JSONArray list = new JSONArray();
 
@@ -202,25 +207,24 @@ public class UserEntity {
             sql.open();
 
             sql.Stetmnt = sql.Conection.createStatement();
-            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from user order by SCORE desc limit 5");
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from user order by SCORE desc ");
 
-            boolean flage = false;
             while (sql.ResStetmnt.next()) {
-                flage = true;
+                
                 JSONObject result = new JSONObject();
-                User_Id = sql.ResStetmnt.getInt("USER_ID");
-                Email = sql.ResStetmnt.getString("EMAIL");
-                Pass = sql.ResStetmnt.getString("PASS");
-                image = sql.ResStetmnt.getString("USERIMAGE");
-                Name = sql.ResStetmnt.getString("USERNAME");
-                Score = sql.ResStetmnt.getDouble("SCORE");
+                USER_ID = sql.ResStetmnt.getInt("USER_ID");
+                EMAIL = sql.ResStetmnt.getString("EMAIL");
+                PASS = sql.ResStetmnt.getString("PASS");
+                USERIMAGE = sql.ResStetmnt.getString("USERIMAGE");
+                USERNAME = sql.ResStetmnt.getString("USERNAME");
+                SCORE = sql.ResStetmnt.getDouble("SCORE");
 
-                result.put("User_Id", User_Id);
-                result.put("Email", Email);
-                result.put("pass", Pass);
-                result.put("Pass", image);
-                result.put("Name", Name);
-                result.put("Score", Score);
+                result.put("User_Id", USER_ID);
+                result.put("Email", EMAIL);
+                result.put("Pass", PASS);
+                result.put("Image", USERIMAGE);
+                result.put("Name", USERNAME);
+                result.put("Score", SCORE);
                 list.add(result);
 
             }
@@ -234,7 +238,6 @@ public class UserEntity {
         res.put("results", list);
         return res;
     }
-    
     
     
      
