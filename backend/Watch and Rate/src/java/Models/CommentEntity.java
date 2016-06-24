@@ -104,13 +104,12 @@ public class CommentEntity {
 
         try {
             sql.open();
-            System.out.println("entered");
             sql.Stetmnt = sql.Conection.createStatement();
             sql.Stetmnt.executeUpdate("INSERT INTO comment(COMMENT_CONTENT,HASURL,USER_ID,REVIEW_ID) VALUES ('"
                     + json.get("content") + "'," + json.get("hasurl") + "," + json.get("userid") + "," + json.get("revid")
                     + ")");
 
-            sql.Stetmnt = sql.Conection.createStatement();
+             sql.Stetmnt = sql.Conection.createStatement();
             sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT LAST_INSERT_ID() as last_id from comment");
 
             while (sql.ResStetmnt.next()) {
@@ -133,6 +132,7 @@ public class CommentEntity {
                         + json.get("userid") + "," + recieverID + "," + 0 + "," + json.get("revid") + "," + COMMENT_ID + "," + json.get("userid") + ")");
                 sql.close();
             }
+            
             ret.put("status", "inserted");
 
         } catch (SQLException ex) {
@@ -142,6 +142,29 @@ public class CommentEntity {
 
         return ret;
 
+    }
+    
+      public JSONObject deletecomment(JSONObject json) {
+
+        JSONObject ret = new JSONObject();
+        try {
+            sql.open();
+            sql.Stetmnt = sql.Conection.createStatement();
+
+            sql.Stetmnt.executeUpdate("DELETE FROM  notification where COMMENT_ID= " + json.get("comm_id") + " ");
+          
+            sql.Stetmnt = sql.Conection.createStatement();
+
+            sql.Stetmnt.executeUpdate("DELETE FROM  comment where COMMENT_ID= " + json.get("comm_id") + " ");
+
+            ret.put("status", "deleted");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ret.put("status", "failed");
+        }
+
+        return ret;
     }
 
 }

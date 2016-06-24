@@ -245,6 +245,56 @@ public class ReviewEntity {
         return ret;
 
     }
+    
+     public JSONObject getLastestReviewslist() {
+        JSONObject ret = new JSONObject();
+        JSONArray list = new JSONArray();
+
+        try {
+            sql.open();
+
+            sql.Stetmnt = sql.Conection.createStatement();
+            sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * from review order by DATE desc ");
+
+            while (sql.ResStetmnt.next()) {
+
+                JSONObject review = new JSONObject();
+                TITLE = sql.ResStetmnt.getString("TITLE");
+                REVIEW_ID = sql.ResStetmnt.getInt("REVIEW_ID");
+                DATE = sql.ResStetmnt.getString("DATE");
+                REVIEW_CONTENT = sql.ResStetmnt.getString("REVIEW_CONTENT");
+                USER_ID = sql.ResStetmnt.getInt("USER_ID");
+
+                UserEntity user = new UserEntity();
+                String user_name = user.getUsername(USER_ID);
+
+                int mov_id = sql.ResStetmnt.getInt("MOVIE_ID");
+                MovieEntity moiveEntity = new MovieEntity();
+
+                String mov_name = moiveEntity.getmovie(mov_id);
+
+                review.put("content", REVIEW_CONTENT);
+                review.put("mov_name", mov_name);
+                review.put("date", DATE);
+                review.put("userid", USER_ID);
+                review.put("username", user_name);
+                review.put("review_title", TITLE);
+                review.put("mov_id", mov_id);
+                review.put("rev_id", REVIEW_ID);
+                list.add(review);
+
+            }
+            ret.put("status", "lastreview");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ret.put("status", "something wrong ,Try again..");
+        }
+
+        ret.put("results", list);
+        return ret;
+
+    }
 
     public JSONObject getreviewinfo(JSONObject json) {
         JSONObject ret = new JSONObject();

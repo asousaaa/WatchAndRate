@@ -100,9 +100,9 @@ public class SlidingPanel extends Activity {
         my_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!String.valueOf(context.getClass()).contains("user_reviews")) {
+                if (!String.valueOf(context.getClass()).contains("own_reviews")) {
                     if(activuser.getUser_Id()!=0) {
-                        Intent intent = new Intent(context, user_reviews.class);
+                        Intent intent = new Intent(context, own_reviews.class);
                         context.startActivity(intent);
                         mSlidingPanel.closePane();
                     } else{

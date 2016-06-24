@@ -28,7 +28,7 @@ import org.json.simple.parser.ParseException;
 /**
  * Created by hosam azzam on 11/06/2016.
  */
-public class user_reviews extends Activity {
+public class own_reviews extends Activity {
     View review_card;
     LayoutInflater layoutInflater;
     String Url;
@@ -37,8 +37,6 @@ public class user_reviews extends Activity {
     SlidingPaneLayout mSlidingPanel;
     SlidingPanel slide;
     ProgressDialog prgDialog;
-    int id;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,29 +45,20 @@ public class user_reviews extends Activity {
         assert ab != null;
         ab.hide();
         user = UserEntity.getCurrentUser();
-        try {
-            Intent intent = getIntent();
-            id = intent.getIntExtra("userid", 0);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         //  Url="http://10.0.3.2:8080/Watch_and_Rate";
 //        Url ="http://192.168.1.6:8080/Watch_and_Rate";
         Url = "http://watchandrate-fcigp.rhcloud.com";
         list_View = (LinearLayout) findViewById(R.id.userlistView);
 
-        TextView header = (TextView) findViewById(R.id.header_title);
-        header.setText("User Reviews");
         layoutInflater = LayoutInflater.from(this);
 
+      review_card = layoutInflater.inflate(R.layout.review_card_own, null);
 
-         review_card = layoutInflater.inflate(R.layout.review_card_user, null);
 
         System.out.println("loool");
         Connect conn = new Connect();
         JSONObject jobj = new JSONObject();
-        jobj.put("userid", id);
+        jobj.put("userid", user.getUser_Id());
         conn.data = "data=" + jobj.toString();
         conn.execute(Url + "/Viewown");
         System.out.println(conn.data);
@@ -88,7 +77,7 @@ public class user_reviews extends Activity {
                 System.out.println("loool");
                 Connect conn = new Connect();
                 JSONObject jobj = new JSONObject();
-                jobj.put("userid", id);
+                jobj.put("userid", user.getUser_Id());
                 conn.data = "data=" + jobj.toString();
                 conn.execute(Url + "/Viewown");
                 System.out.println(conn.data);
@@ -101,7 +90,7 @@ public class user_reviews extends Activity {
         mSlidingPanel.setParallaxDistance(200);
 
         slide = new SlidingPanel();
-        slide.setContext(user_reviews.this);
+        slide.setContext(own_reviews.this);
         slide.setmSlidingPanel(mSlidingPanel);
         slide.setUser_img((ImageView) findViewById(R.id.slide_user_img));
         slide.setLogout((Button) findViewById(R.id.logout_btn));
@@ -148,7 +137,7 @@ public class user_reviews extends Activity {
                 obj = parser.parse(result);
                 JSONObject data = (JSONObject) obj;
                 if (data.get("status").toString().equals("movie")) {
-                    Intent intent = new Intent(user_reviews.this, movie_info.class);
+                    Intent intent = new Intent(own_reviews.this, movie_info.class);
                     intent.putExtra("movie", data.toString());
                     startActivity(intent);
                 } else if (data.get("status").toString().equals("ownreview")) {
@@ -216,6 +205,24 @@ public class user_reviews extends Activity {
             }
         });
 
+            ImageButton rev_remove = (ImageButton) review_card.findViewById(R.id.review_remove_btn);
+            rev_remove.setId(Integer.valueOf(review.get("rev_id").toString()));
+            rev_remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    System.out.println(view.getId());
+                    Connect conn = new Connect();
+                    JSONObject jobj = new JSONObject();
+                    jobj.put("userid", user.getUser_Id());
+                    jobj.put("reviewid", view.getId());
+                    conn.data = "data=" + jobj.toString();
+                    conn.execute(Url + "/DeleteReview");
+                    System.out.println(conn.data);
+                    prgDialog.show();
+                }
+            });
+
+
         mov_name.setText("Movie : " + review.get("mov_name").toString());
         review_title.setText("Title : " + review.get("review_title").toString());
         rev_data.setText("Date : " + review.get("date").toString());
@@ -226,14 +233,15 @@ public class user_reviews extends Activity {
             @Override
             public void onClick(View view) {
                 System.out.println(view.getId());
-                Intent intent = new Intent(user_reviews.this, show_review.class);
+                Intent intent = new Intent(own_reviews.this, show_review.class);
                 intent.putExtra("rev_id", view.getId());
                 startActivity(intent);
 
             }
         });
 
-         review_card = layoutInflater.inflate(R.layout.review_card_user, null);
+
+        review_card = layoutInflater.inflate(R.layout.review_card_own, null);
     }
 
 

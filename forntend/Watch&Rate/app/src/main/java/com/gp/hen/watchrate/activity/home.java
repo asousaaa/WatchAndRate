@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,15 +40,16 @@ import java.util.Calendar;
 public class home extends Activity {
     //nyt api=key = 28bcb54b06ae2bb40882d7a5e5dba212:4:74287520
     //http://api.nytimes.com/svc/movies/v2/reviews/?query=taken+3&api-key=28bcb54b06ae2bb40882d7a5e5dba212:4:74287520picks.xmls
-    LinearLayout search_content, list_View, global_list_View, recomlist, recentlylist, toplist, reveiw_list;
+    LinearLayout search_content, list_View, global_list_View, recomlist, recentlylist, toplist, reveiw_list, notfiy_panal,homepanel;
 
     LayoutInflater layoutInflater;
-    View search_card, review_card, user_card,lastreview_card;
+    View search_card, review_card, user_card, lastreview_card;
     ArrayList movies_id;
     String Url;
     SlidingPaneLayout mSlidingPanel;
     SlidingPanel slide;
-    Button show_recom, show_recen,show_recent_review, show_top;
+    ImageButton show_notfy;
+    Button show_recom, show_recen, show_recent_review, show_top;
     ProgressDialog prgDialog;
     private SwipeRefreshLayout swipeView;
 
@@ -147,7 +149,6 @@ public class home extends Activity {
             }
         });
 
-
         movies_id = new ArrayList();
         UserEntity user = UserEntity.getCurrentUser();
         System.out.println(user.getName() + " " + user.getEmail());
@@ -156,11 +157,27 @@ public class home extends Activity {
         //The reviews api key (NYT API)
         //  28bcb54b06ae2bb40882d7a5e5dba212:4:74287520
 
+        notfiy_panal = (LinearLayout) findViewById(R.id.notfcationpanel);
+        homepanel = (LinearLayout) findViewById(R.id.homepanal);
+
+        show_notfy = (ImageButton) findViewById(R.id.notfiy_btn);
+        show_notfy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(view.getId());
+                if (notfiy_panal.getVisibility() == View.GONE) {
+                    notfiy_panal.setVisibility(View.VISIBLE);
+                } else {
+                    notfiy_panal.setVisibility(View.GONE);
+                }
+            }
+        });
+
 
         layoutInflater = LayoutInflater.from(this);
         search_card = layoutInflater.inflate(R.layout.search_card, null);
         review_card = layoutInflater.inflate(R.layout.review_card, null);
-        lastreview_card = layoutInflater.inflate(R.layout.review_card_user,null);
+        lastreview_card = layoutInflater.inflate(R.layout.review_card_user, null);
         user_card = layoutInflater.inflate(R.layout.user_card, null);
 
         recentlylist = (LinearLayout) findViewById(R.id.recentrlylistview);
@@ -197,10 +214,9 @@ public class home extends Activity {
         conn.execute(query);
 
 
-
         toplist = (LinearLayout) findViewById(R.id.topuserlistview);
         conn = new Connect();
-        conn.tag="higherReviewers";
+        conn.tag = "higherReviewers";
         conn.limit = 5;
         conn.execute("http://watchandrate-fcigp.rhcloud.com/higher_reviewers");
 
@@ -343,10 +359,13 @@ public class home extends Activity {
     public void onBackPressed() {
         if (search_content.getVisibility() == View.VISIBLE) {
             search_content.setVisibility(View.GONE);
-        } else {
+        }
+        else if (notfiy_panal.getVisibility() == View.VISIBLE) {
+            notfiy_panal.setVisibility(View.GONE);
+        }
+        else {
             super.onBackPressed();
         }
-
 
     }
 
@@ -362,7 +381,7 @@ public class home extends Activity {
         }
 
         protected void onPostExecute(Void unused) {
-            if (tag.equals("movie_api") || tag.equals("review_movie_api")||tag.equals("review_db")||tag.equals("higherReviewers")) {
+            if (tag.equals("movie_api") || tag.equals("review_movie_api") || tag.equals("review_db") || tag.equals("higherReviewers")) {
                 System.out.println(result);
                 JSONParser parser = new JSONParser();
                 Object obj = null;
@@ -388,18 +407,15 @@ public class home extends Activity {
                         if (tag.equals("review_movie_api")) {
                             movies_id.add(json.get("original_title"));
                             movies_id.add(json.get("id"));
-                        }
-                        else if (tag.equals("review_db")) {
-                           addlastreviewtolist(json);
-                        }
-                        else if(tag.equals("higherReviewers")){
+                        } else if (tag.equals("review_db")) {
+                            addlastreviewtolist(json);
+                        } else if (tag.equals("higherReviewers")) {
                             addusersToList(json);
-                        }
-                        else {
+                        } else {
                             addToList(json);
                         }
                     }
-                    prgDialog.hide();
+                    prgDialog.dismiss();
                     if (movies.size() == 0) {
                         Toast.makeText(getApplicationContext(), "no result", Toast.LENGTH_SHORT).show();
 
@@ -423,7 +439,7 @@ public class home extends Activity {
 
                 } catch (ParseException e) {
                     Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
-                    prgDialog.hide();
+                    prgDialog.dismiss();
                     e.printStackTrace();
 
                 }
@@ -467,23 +483,21 @@ public class home extends Activity {
                     swipeView.setEnabled(false);
                 }
             }
-            if(tag.equals("movie_info")){
+            if (tag.equals("movie_info")) {
                 System.out.println(result);
                 JSONParser parser = new JSONParser();
                 Object obj = null;
                 try {
                     obj = parser.parse(result);
                     JSONObject data = (JSONObject) obj;
-                    if(data.get("status").toString().equals("movie")){
+                    if (data.get("status").toString().equals("movie")) {
                         Intent intent = new Intent(home.this, movie_info.class);
-                        intent.putExtra("movie",data.toString());
+                        intent.putExtra("movie", data.toString());
                         startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "something wrong ,Try again..", Toast.LENGTH_SHORT).show();
+                        prgDialog.dismiss();
                     }
-                    else{
-                        Toast.makeText(getApplicationContext(),"something wrong ,Try again..", Toast.LENGTH_SHORT).show();
-                        prgDialog.hide();
-                    }
-
 
 
                 } catch (ParseException e) {
@@ -541,51 +555,51 @@ public class home extends Activity {
         review_card = layoutInflater.inflate(R.layout.review_card, null);
     }
 
-   public void addlastreviewtolist(JSONObject review){
-       lastreview_card.setId(Integer.valueOf(review.get("rev_id").toString()));
-       TextView mov_name = (TextView) lastreview_card.findViewById(R.id.movie_title);
-       TextView review_title = (TextView) lastreview_card.findViewById(R.id.review_title);
-       TextView rev_data = (TextView) lastreview_card.findViewById(R.id.review_date);
-       TextView rev_contnet = (TextView) lastreview_card.findViewById(R.id.review_content);
-       TextView review_author = (TextView) lastreview_card.findViewById(R.id.review_author);
-       ImageButton rev_open_mov = (ImageButton) lastreview_card.findViewById(R.id.review_open_mov_btn);
+    public void addlastreviewtolist(JSONObject review) {
+        lastreview_card.setId(Integer.valueOf(review.get("rev_id").toString()));
+        TextView mov_name = (TextView) lastreview_card.findViewById(R.id.movie_title);
+        TextView review_title = (TextView) lastreview_card.findViewById(R.id.review_title);
+        TextView rev_data = (TextView) lastreview_card.findViewById(R.id.review_date);
+        TextView rev_contnet = (TextView) lastreview_card.findViewById(R.id.review_content);
+        TextView review_author = (TextView) lastreview_card.findViewById(R.id.review_author);
+        ImageButton rev_open_mov = (ImageButton) lastreview_card.findViewById(R.id.review_open_mov_btn);
 
-       rev_open_mov.setId(Integer.valueOf(review.get("mov_id").toString()));
-       rev_open_mov.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               System.out.println(view.getId());
-               Connect conn = new Connect();
-               JSONObject jobj = new JSONObject();
-               jobj.put("movieid", view.getId());
-               conn.data = "data=" + jobj.toString();
-               conn.tag="movie_info";
-               conn.execute(Url+"/Get_Info");
-               System.out.println(conn.data);
-           }
-       });
+        rev_open_mov.setId(Integer.valueOf(review.get("mov_id").toString()));
+        rev_open_mov.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(view.getId());
+                Connect conn = new Connect();
+                JSONObject jobj = new JSONObject();
+                jobj.put("movieid", view.getId());
+                conn.data = "data=" + jobj.toString();
+                conn.tag = "movie_info";
+                conn.execute(Url + "/Get_Info");
+                System.out.println(conn.data);
+            }
+        });
 
 
-       mov_name.setText("Movie : " + review.get("mov_name").toString());
-       review_title.setText("Title : " + review.get("review_title").toString());
-       rev_data.setText("Date : " + review.get("date").toString());
-       review_author.setText("Author : " + review.get("username").toString());
+        mov_name.setText("Movie : " + review.get("mov_name").toString());
+        review_title.setText("Title : " + review.get("review_title").toString());
+        rev_data.setText("Date : " + review.get("date").toString());
+        review_author.setText("Author : " + review.get("username").toString());
 
-       rev_contnet.setText("Description : " + review.get("content").toString());
-       reveiw_list.addView(lastreview_card);
+        rev_contnet.setText("Description : " + review.get("content").toString());
+        reveiw_list.addView(lastreview_card);
 
-       lastreview_card.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               System.out.println(view.getId());
-               Intent intent = new Intent(home.this, show_review.class);
-               intent.putExtra("rev_id", view.getId());
-               startActivity(intent);
+        lastreview_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(view.getId());
+                Intent intent = new Intent(home.this, show_review.class);
+                intent.putExtra("rev_id", view.getId());
+                startActivity(intent);
 
-           }
-       });
+            }
+        });
 
-       lastreview_card = layoutInflater.inflate(R.layout.review_card_user, null);
+        lastreview_card = layoutInflater.inflate(R.layout.review_card_user, null);
     }
 
     public void addusersToList(JSONObject user) {
@@ -594,16 +608,25 @@ public class home extends Activity {
         TextView userScore = (TextView) user_card.findViewById(R.id.user_score);
         ImageView userImage = (ImageView) user_card.findViewById(R.id.user_img);
 
-        userName.setText("Name : "+user.get("Name").toString());
-        userScore.setText("Score : "+user.get("Score").toString());
+        userName.setText("Name : " + user.get("Name").toString());
+        userScore.setText("Score : " + user.get("Score").toString());
 
-        if(!user.get("Image").equals("none")) {
+        if (!user.get("Image").equals("none")) {
             LoadImage load = new LoadImage();
             load.Image(userImage);
-            load.context= home.this;
+            load.context = home.this;
             load.execute("http://watchandrateimage.comxa.com/User_image/" + user.get("Image"));
         }
         toplist.addView(user_card);
+        user_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(home.this, user_reviews.class);
+                intent.putExtra("userid",view.getId());
+
+                startActivity(intent);
+            }
+        });
 
         user_card = layoutInflater.inflate(R.layout.user_card, null);
 

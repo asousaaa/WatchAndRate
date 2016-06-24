@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller.Comment;
+package Controller.Review;
 
-import Models.CommentEntity;
+import Models.ReviewEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,14 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  *
  * @author hosam azzam
  */
-@WebServlet(name = "Delete_comment", urlPatterns = {"/Delete_comment"})
-public class Delete_comment extends HttpServlet {
+@WebServlet(name = "LastReviews", urlPatterns = {"/LastReviews"})
+public class LastReviews extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,18 +33,14 @@ public class Delete_comment extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-              JSONParser parser = new JSONParser();
-             Object obj = parser.parse(request.getParameter("data"));
-
-            JSONObject object = (JSONObject) obj;
-            CommentEntity rev = new CommentEntity();
-
-            JSONObject ret = rev.deletecomment(object);
-
+            /* TODO output your page here. You may use following sample code. */        
+            ReviewEntity rev = new ReviewEntity();
+       
+            JSONObject ret = rev.getLastestReviewslist();
+             
             out.println(ret.toJSONString());
         }
     }
@@ -64,11 +57,7 @@ public class Delete_comment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ParseException ex) {
-            Logger.getLogger(Delete_comment.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -82,11 +71,7 @@ public class Delete_comment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ParseException ex) {
-            Logger.getLogger(Delete_comment.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

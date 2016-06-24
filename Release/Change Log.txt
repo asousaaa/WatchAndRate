@@ -25,3 +25,9 @@ version 1.0.4 :
 - Update UI
 - Enhance search feature
 - Handel some error (Ex: no network)
+
+version 2.0.3 : 
+- Fix some bugs
+- Update UI
+- Added all most 95% of application features
+- support cache images

@@ -118,17 +118,20 @@ public class lastreviews extends Activity {
                 try {
                     obj = parser.parse(result);
                     JSONObject data = (JSONObject) obj;
-                    result = data.get("results").toString();
-                    obj = parser.parse(result);
-                    JSONArray reviews = (JSONArray) obj;
-                    for (int i = 0; i < reviews.size(); i++) {
-                        obj = parser.parse(reviews.get(i).toString());
-                        JSONObject review = (JSONObject) obj;
-                        addlastreviewtolist(review);
+                    if(data.get("status").equals("lastreview")) {
+                        result = data.get("results").toString();
+                        obj = parser.parse(result);
+                        JSONArray reviews = (JSONArray) obj;
+                        for (int i = 0; i < reviews.size(); i++) {
+                            obj = parser.parse(reviews.get(i).toString());
+                            JSONObject review = (JSONObject) obj;
+                            addlastreviewtolist(review);
+                        }
+                        prgDialog.dismiss();
+                        if (reviews.size() == 0)
+                            Toast.makeText(getApplicationContext(), "no result", Toast.LENGTH_SHORT).show();
+
                     }
-                    prgDialog.dismiss();
-                    if (reviews.size() == 0)
-                        Toast.makeText(getApplicationContext(), "no result", Toast.LENGTH_SHORT).show();
                 } catch (ParseException e) {
                     Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
                     prgDialog.dismiss();

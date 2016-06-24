@@ -181,7 +181,7 @@ public class show_review extends Activity {
                     rev_aother.setText(data.get("username").toString());
                     rev_title.setText("Title : " + data.get("review_title").toString());
 
-                    rev_des.setText("Description :- \n" + data.get("content").toString());
+                    rev_des.setText("Description :- " + data.get("content").toString());
 
                     int commt_flage = Integer.valueOf(data.get("rev_comment").toString());
                     flagecomment=commt_flage;
@@ -232,6 +232,16 @@ public class show_review extends Activity {
                     conn.execute(Url + "/GetComments");
                     System.out.println(conn.data);
                 }
+                else  if(data.get("status").toString().equals("deleted")){
+                    Toast.makeText(getApplicationContext(), "Your comment deleted successfully", Toast.LENGTH_SHORT).show();
+                    List_view.removeAllViews();
+                    Connect conn = new Connect();
+                    JSONObject jobj = new JSONObject();
+                    jobj.put("rev_id",rev_id );
+                    conn.data = "data=" + jobj.toString();
+                    conn.execute(Url + "/GetComments");
+                    System.out.println(conn.data);
+                }
                 else{
                     Toast.makeText(getApplicationContext(), "something wrong ,Try again..", Toast.LENGTH_SHORT).show();
                 }
@@ -248,6 +258,29 @@ public class show_review extends Activity {
         TextView user_name = (TextView) comment_card.findViewById(R.id.user_name);
         TextView content = (TextView) comment_card.findViewById(R.id.commnet_content);
         ImageView userimage = (ImageView) comment_card.findViewById(R.id.user_img);
+        ImageView remove_button = (ImageView) comment_card.findViewById(R.id.comment_remove_btn);
+        System.out.println("user id "+comment.get("userid"));
+        System.out.println("user id "+user.getUser_Id());
+        if(comment.get("userid").toString().equals(String.valueOf(user.getUser_Id()))){
+            final int id= comment_card.getId();
+            remove_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Connect conn = new Connect();
+                    JSONObject jobj = new JSONObject();
+                    jobj.put("comm_id", id);
+                    conn.data = "data=" + jobj.toString();
+                    conn.execute(Url + "/Delete_comment");
+                    System.out.println(conn.data);
+
+                }
+            });
+        }
+        else{
+            System.out.println("dsf sd f");
+            remove_button.setVisibility(View.GONE);
+        }
+
 
         user_name.setText(comment.get("username").toString());
         content.setText(comment.get("content").toString());

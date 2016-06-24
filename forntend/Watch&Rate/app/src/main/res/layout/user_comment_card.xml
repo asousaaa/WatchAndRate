@@ -55,9 +55,20 @@
             android:textSize="14sp"
             android:visibility="visible"
             android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
             android:layout_alignTop="@+id/user_img"
+            android:layout_toLeftOf="@+id/comment_remove_btn"
+            android:layout_toStartOf="@+id/comment_remove_btn" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_action_delete"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:id="@+id/comment_remove_btn"
+            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-             />
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

@@ -153,6 +153,15 @@ public class topreviewers extends Activity {
         }
         list_View.addView(user_card);
 
+        user_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(topreviewers.this, user_reviews.class);
+                intent.putExtra("userid",view.getId());
+
+                startActivity(intent);
+            }
+        });
         user_card = layoutInflater.inflate(R.layout.user_card, null);
 
     }

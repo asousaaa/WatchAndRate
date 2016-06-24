@@ -221,7 +221,6 @@ public class UserEntity {
 
                 result.put("User_Id", USER_ID);
                 result.put("Email", EMAIL);
-                result.put("Pass", PASS);
                 result.put("Image", USERIMAGE);
                 result.put("Name", USERNAME);
                 result.put("Score", SCORE);
