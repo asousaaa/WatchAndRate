@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class Sql {
     
       String url = "jdbc:mysql://localhost:3306/watchandrate";
-        String user = "root";
+        String user = "heba";
         String pass = "123456";
         String Line;
         Connection Conection = null;

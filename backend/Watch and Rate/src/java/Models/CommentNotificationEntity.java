@@ -51,6 +51,7 @@ public class CommentNotificationEntity {
                 String reviewTitle = res.get("title").toString();
                 String movieTitle =  res.get("movie_name").toString();
                 int movieID = Integer.parseInt( res.get("movie_id").toString());
+                comment.put("notification_id", sql.ResStetmnt.getInt("NOTIFICATION_ID"));
                 comment.put("rev_id", sql.ResStetmnt.getInt("REVIEW_ID"));
                 comment.put("review_title",reviewTitle);
                 comment.put("username", user_name);
@@ -60,6 +61,9 @@ public class CommentNotificationEntity {
                 comment.put("userimage", user_image);
                 comment.put("movie_name",movieTitle);
                 comment.put("movie_id",movieID);
+                
+                sql.Stetmnt = sql.Conection.createStatement();
+                sql.Stetmnt.executeUpdate("UPDATE notification SET RECIEVED=1 WHERE COMMENT_ID= " + sql.ResStetmnt.getInt("COMMENT_ID") + " ");
 
                 list.add(comment);
 
