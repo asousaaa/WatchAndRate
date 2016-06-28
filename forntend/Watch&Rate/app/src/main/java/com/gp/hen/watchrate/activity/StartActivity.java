@@ -2,11 +2,13 @@ package com.gp.hen.watchrate.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,9 +24,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
+
 
 public class StartActivity extends Activity {
-    public String Url ;
+    public String Url;
 
 
     Button signup, login, sign_in;
@@ -43,13 +47,42 @@ public class StartActivity extends Activity {
         ActionBar ab = getActionBar();
         assert ab != null;
         ab.hide();
-    //     Url="http://10.0.3.2:8080/Watch_and_Rate";
+        //     Url="http://10.0.3.2:8080/Watch_and_Rate";
 //        Url ="http://192.168.1.6:8080/Watch_and_Rate";
         Url = "http://watchandrate-fcigp.rhcloud.com";
         logo = (ImageView) findViewById(R.id.logo);
         signup = (Button) findViewById(R.id.sign_up_button);
         sign_in = (Button) findViewById(R.id.sign_in_button);
         list = (RelativeLayout) findViewById(R.id.listView);
+
+        File f = new File(
+                "/data/data/com.gp.hen.watchrate/shared_prefs/account.xml");
+        if (f.exists()) {
+
+            SharedPreferences shared = getApplicationContext().getSharedPreferences("account", 0);
+
+            if (shared.contains("userobject")) {
+                try {
+                    String str = shared.getString("userobject", "");
+                    System.out.println(str);
+                    JSONParser parser = new JSONParser();
+                    Object obj = parser.parse(str);
+                    JSONObject object = (JSONObject) obj;
+                    UserEntity activeuser = UserEntity.getCurrentUser();
+                    activeuser.setCurrentUser(object);
+
+                    Intent intent = new Intent(StartActivity.this, home.class);
+                    finish();
+                    startActivity(intent);
+                }
+                catch(ParseException e){
+                    e.printStackTrace();
+                }
+
+
+            }
+        }
+
 
         prgDialog = new ProgressDialog(this);
         signup.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +122,7 @@ public class StartActivity extends Activity {
 
                             conn.data = "data=" + jobj.toString();
                             System.out.println(conn.data);
-                            conn.execute(Url+"/Sign_up");
+                            conn.execute(Url + "/Sign_up");
                             prgDialog.setMessage("Loading...");
                             prgDialog.setCancelable(false);
                             prgDialog.show();
@@ -117,7 +150,7 @@ public class StartActivity extends Activity {
                 skip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        UserEntity activeuser= UserEntity.getCurrentUser();
+                        UserEntity activeuser = UserEntity.getCurrentUser();
                         activeuser.setnullUser();
                         Intent intent = new Intent(StartActivity.this, home.class);
                         finish();
@@ -147,8 +180,7 @@ public class StartActivity extends Activity {
                             jobj.put("pass", pass.getText().toString());
 
                             conn.data = "data=" + jobj.toString();
-                            conn.execute(Url+"/Sign_in");
-
+                            conn.execute(Url + "/Sign_in");
 
 
                         }
@@ -180,17 +212,19 @@ public class StartActivity extends Activity {
                 if (object.get("status").toString().equals("done")) {
                     Toast.makeText(getApplicationContext(), "your account added ,Now you can use our app after login", Toast.LENGTH_SHORT).show();
                     prgDialog.dismiss();
-                }
-                else if (object.get("status").toString().equals("login")) {
-                    UserEntity activeuser= UserEntity.getCurrentUser();
+                } else if (object.get("status").toString().equals("login")) {
+                    UserEntity activeuser = UserEntity.getCurrentUser();
                     activeuser.setCurrentUser(object);
+                    SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("account", 0).edit();
+                    editor.putString("userobject", object.toString());
+                    editor.commit();
+
                     prgDialog.dismiss();
                     Intent intent = new Intent(StartActivity.this, home.class);
                     finish();
                     startActivity(intent);
 
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), object.get("status").toString(), Toast.LENGTH_SHORT).show();
                     prgDialog.dismiss();
                 }

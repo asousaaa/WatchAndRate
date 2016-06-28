@@ -108,8 +108,7 @@ public class topreviewers extends Activity {
             return null;
         }
 
-        protected void onPostExecute(Void unused)
-        {
+        protected void onPostExecute(Void unused) {
             if(tag.equals("higherReviewers")) {
                 JSONParser parser = new JSONParser();
                 Object obj = null;
@@ -146,8 +145,7 @@ public class topreviewers extends Activity {
         userName.setText("Name : "+user.get("Name").toString());
         userScore.setText("Score : "+user.get("Score").toString());
 
-        if(!user.get("Image").equals("none"))
-        {
+        if(!user.get("Image").equals("none")) {
             LoadImage load = new LoadImage();
             load.Image(userImage);
             load.context = topreviewers.this;
@@ -165,5 +163,6 @@ public class topreviewers extends Activity {
             }
         });
         user_card = layoutInflater.inflate(R.layout.user_card, null);
+
     }
 }

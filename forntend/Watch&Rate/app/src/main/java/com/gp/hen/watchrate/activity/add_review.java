@@ -126,25 +126,31 @@ public class add_review extends Activity {
             @Override
             public void onClick(View view) {
 
-                if (!imgDecodableString.equals("")) {
-                    Upload image = new Upload();
+                if(!title.getText().equals("")&& !content.getText().equals("")) {
+                    if (!imgDecodableString.equals("")) {
+                        Upload image = new Upload();
 
-                    prgDialog.setMessage("Uploading...");
-                    prgDialog.setCancelable(false);
-                    prgDialog.show();
+                        prgDialog.setMessage("Uploading...");
+                        prgDialog.setCancelable(false);
+                        prgDialog.show();
 
-                    Calendar cal = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss");
-                    uptime = sdf.format(cal.getTime());
+                        Calendar cal = Calendar.getInstance();
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss");
+                        uptime = sdf.format(cal.getTime());
 
-                    image.type = "review";
-                    image.imgPath = imgDecodableString;
-                    image.review = add_review.this;
-                    image.uploadtime = uptime;
-                    image.uploadImage();
-                } else {
-                    img_path.setText("chosse image");
-                    doneUploadImageState(1);
+                        image.type = "review";
+                        image.imgPath = imgDecodableString;
+                        image.review = add_review.this;
+                        image.uploadtime = uptime;
+                        image.uploadImage();
+                    } else {
+                        img_path.setText("chosse image");
+                        doneUploadImageState(1);
+                    }
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "please fill the fields", Toast.LENGTH_SHORT).show();
+
                 }
 
             }

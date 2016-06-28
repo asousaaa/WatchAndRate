@@ -41,7 +41,7 @@ import java.util.Calendar;
 public class home extends Activity {
     //nyt api=key = 28bcb54b06ae2bb40882d7a5e5dba212:4:74287520
     //http://api.nytimes.com/svc/movies/v2/reviews/?query=taken+3&api-key=28bcb54b06ae2bb40882d7a5e5dba212:4:74287520picks.xmls
-    LinearLayout search_content, list_View, global_list_View, recomlist, recentlylist, toplist, reveiw_list, notfiy_panal,homepanel, notification_content;
+    LinearLayout search_content, list_View, global_list_View, recomlist, recentlylist, toplist, reveiw_list, notfiy_panal, homepanel, notification_content;
 
     LayoutInflater layoutInflater;
     View search_card, review_card, user_card, lastreview_card, notification_card;
@@ -50,16 +50,19 @@ public class home extends Activity {
     SlidingPaneLayout mSlidingPanel;
     SlidingPanel slide;
     ImageButton show_notfy;
+    ImageView notify_conut_box;
     Button show_recom, show_recen, show_recent_review, show_top;
     ProgressDialog prgDialog;
     private SwipeRefreshLayout swipeView;
     TextView notificationCount;
 
+    int userID = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        notificationCount=(TextView) findViewById(R.id.count);
+        notificationCount = (TextView) findViewById(R.id.count);
         ActionBar ab = getActionBar();
         assert ab != null;
         ab.hide();
@@ -155,7 +158,7 @@ public class home extends Activity {
         movies_id = new ArrayList();
         UserEntity user = UserEntity.getCurrentUser();
         System.out.println(user.getName() + " " + user.getEmail());
-        final int userID=user.getUser_Id();
+        userID = user.getUser_Id();
         //http://image.tmdb.org/t/p/w300/hO1R1TI429PjkOjby4dTPBrWFwn.jpg
         //http://api.themoviedb.org/3/movie/260346?api_key=23386b0753dd348bcb87ab9f516da5d5
         //The reviews api key (NYT API)
@@ -165,25 +168,18 @@ public class home extends Activity {
         homepanel = (LinearLayout) findViewById(R.id.homepanal);
 
         show_notfy = (ImageButton) findViewById(R.id.notfiy_btn);
-        show_notfy.setOnClickListener(new View.OnClickListener()
-        {
+        show_notfy.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                System.out.println(view.getId());
-                if (notfiy_panal.getVisibility() == View.GONE)
-                {
-                    notfiy_panal.setVisibility(View.VISIBLE);
-                    Connect conn = new Connect();
-                    JSONObject object=new JSONObject();
-                    object.put("userid",userID);
-                    conn.data="data= "+object.toString();
-                    conn.tag="showNotification";
-                    conn.execute(Url + "/comment_notification");
-                }
-                else
-                {
-                    notfiy_panal.setVisibility(View.GONE);
+            public void onClick(View view) {
+                if (userID != 0) {
+                    if (notfiy_panal.getVisibility() == View.GONE) {
+                        notfiy_panal.setVisibility(View.VISIBLE);
+                    } else {
+                        notfiy_panal.setVisibility(View.GONE);
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "you must sign up to use this feature :P ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -202,7 +198,18 @@ public class home extends Activity {
         SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = mdformat.format(calendar.getTime());
 
+        notify_conut_box = (ImageView) findViewById(R.id.count_box);
+
         Connect conn = new Connect();
+        if (userID != 0) {
+            JSONObject object = new JSONObject();
+            object.put("userid", userID);
+            conn.data = "data= " + object.toString();
+            conn.tag = "showNotification";
+            conn.execute(Url + "/comment_notification");
+        }
+
+        conn = new Connect();
         conn.tag = "movie_api";
         conn.listview = recentlylist;
         conn.limit = 5;
@@ -301,7 +308,7 @@ public class home extends Activity {
 
         list_View = (LinearLayout) findViewById(R.id.searchlistView);
         search_content = (LinearLayout) findViewById(R.id.search_table);
-        notification_content= (LinearLayout) findViewById(R.id.notificationLayout);
+        notification_content = (LinearLayout) findViewById(R.id.notificationLayout);
         ImageButton search_btn = (ImageButton) findViewById(R.id.search_btn);
         final Button Search_info_btn = (Button) findViewById(R.id.Search_info_btn);
         final Button Reviews_btn = (Button) findViewById(R.id.Reviews_btn);
@@ -353,8 +360,7 @@ public class home extends Activity {
                 Search_info_btn.setBackground(getResources().getDrawable(R.drawable.button_box));
                 Reviews_btn.setBackground(getResources().getDrawable(R.drawable.tab_box));
                 list_View.removeAllViews();
-                //  search_content.setVisibility(View.VISIBLE);
-                //   Toast.makeText(getApplicationContext(),"not implement yet", Toast.LENGTH_SHORT).show();
+
                 swipeView.setRefreshing(true);
                 swipeView.setEnabled(true);
 
@@ -376,11 +382,9 @@ public class home extends Activity {
     public void onBackPressed() {
         if (search_content.getVisibility() == View.VISIBLE) {
             search_content.setVisibility(View.GONE);
-        }
-        else if (notfiy_panal.getVisibility() == View.VISIBLE) {
+        } else if (notfiy_panal.getVisibility() == View.VISIBLE) {
             notfiy_panal.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
 
@@ -522,35 +526,30 @@ public class home extends Activity {
                     e.printStackTrace();
                 }
             }
-            if(tag.equals("showNotification"))
-            {
+            if (tag.equals("showNotification")) {
                 JSONParser parser = new JSONParser();
                 Object obj = null;
 
-                try
-                {
+                try {
                     obj = parser.parse(result);
                     JSONObject data = (JSONObject) obj;
                     result = data.get("results").toString();
 
                     obj = parser.parse(result);
                     JSONArray notifications = (JSONArray) obj;
-                    if(notifications.size()>0)
-                    {
-                        for (int i = 0; i < notifications.size(); i++)
-                        {
+                    if (notifications.size() > 0) {
+                        for (int i = 0; i < notifications.size(); i++) {
                             obj = parser.parse(notifications.get(i).toString());
                             JSONObject notification = (JSONObject) obj;
                             //System.out.println(notification.toString());
                             addNotificationToList(notification);
                         }
                         notificationCount.setText(String.valueOf(notifications.size()));
+                    } else if (notifications.size() == 0) {
+                        notify_conut_box.setVisibility(View.GONE);
+                        show_notfy.setEnabled(false);
                     }
-                    else if(notifications.size() == 0)
-                            Toast.makeText(getApplicationContext(),"no result", Toast.LENGTH_SHORT).show();
-                }
-                catch (ParseException e)
-                {
+                } catch (ParseException e) {
                     Toast.makeText(getApplicationContext(), "Error!!, please check network or try again", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -558,7 +557,7 @@ public class home extends Activity {
         }
     }
 
-    public void addToList(final JSONObject film ) {
+    public void addToList(final JSONObject film) {
 
         search_card.setId(Integer.valueOf(film.get("id").toString()));
         ImageView mov_img = (ImageView) search_card.findViewById(R.id.movie_img);
@@ -589,16 +588,15 @@ public class home extends Activity {
         search_card = layoutInflater.inflate(R.layout.search_card, null);
     }
 
-    public void addNotificationToList(final JSONObject notification)
-    {
-        notification_card.setId(Integer.valueOf(notification.get("notification_id").toString()));
-        String content=notification.get("username").toString()+" has commented on your \""+notification.get("review_title").toString()
-                +"\" for movie \"" + notification.get("movie_name").toString()+"\" " ;
+    public void addNotificationToList(final JSONObject notification) {
+        notification_card.setId(Integer.valueOf(notification.get("rev_id").toString()));
+        String content = notification.get("username").toString() + " has commented on your review title : \""
+                + notification.get("review_title").toString().replaceAll("\n", " ")
+                + "\" for movie \"" + notification.get("movie_name").toString() + "\" ";
         ImageView userImage = (ImageView) notification_card.findViewById(R.id.user_img);
-        TextView  notificationContent= (TextView) notification_card.findViewById(R.id.user_name);
+        TextView notificationContent = (TextView) notification_card.findViewById(R.id.user_name);
 
-        if(!notification.get("userimage").equals("none"))
-        {
+        if (!notification.get("userimage").equals("none")) {
             LoadImage load = new LoadImage();
             load.Image(userImage);
             load.context = home.this;
@@ -607,19 +605,20 @@ public class home extends Activity {
 
         notificationContent.setText(content);
         notification_content.addView(notification_card);
-/*final String jsonText = notification.toJSONString();
-search_card.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        System.out.println("hey");
-        Intent intent = new Intent(home.this, movie_info.class);
-        intent.putExtra("movie", jsonText);
-        startActivity(intent);
-    }
-});*/
+        final int jsonText = notification_card.getId();
+        notification_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("hey");
+                Intent intent = new Intent(home.this, show_review.class);
+                intent.putExtra("rev_id", jsonText);
+                startActivity(intent);
+            }
+        });
         notification_card = layoutInflater.inflate(R.layout.notfiy_card, null);
 
     }
+
     public void addReviewToList(JSONObject review, String mov_name, int index) {
         review_card.setId(index);
         TextView mov_title = (TextView) review_card.findViewById(R.id.movie_title);
@@ -701,7 +700,7 @@ search_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(home.this, user_reviews.class);
-                intent.putExtra("userid",view.getId());
+                intent.putExtra("userid", view.getId());
 
                 startActivity(intent);
             }
