@@ -2,7 +2,10 @@ package Models;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -95,9 +98,33 @@ public class MovieEntity {
         return MOVIENAME;
     }
 
+    public JSONObject calculateRate(JSONObject obj) throws ParseException {
+        JSONObject result = new JSONObject();
+        ReviewEntity re = new ReviewEntity();
+        JSONObject revList = re.getReviewList(obj);
+        
+        String data = revList.get("results").toString();
+        JSONParser parser = new JSONParser();
+        Object object =  parser.parse(data);
+        JSONArray arr = (JSONArray) object;
+        float summation = 0.0f;
+        for (int i = 0; i < arr.size(); i++) {
+            JSONObject rateObj = (JSONObject) parser.parse(arr.get(i).toString());
+            float rate = Float.parseFloat(rateObj.get("starrate").toString());
+            summation += rate;
+        }
+        summation = summation/(arr.size());
+       result.put("rate", summation);
+        MOVIE_ID = Integer.parseInt( obj.get("movieid").toString());
+        result.put("movieid", MOVIE_ID);
+        result.put("status", "rated");
+       
+        return result;
+    }
+
     boolean insertmovie(JSONObject json) throws SQLException {
         try {
-          
+
             sql.open();
 
             if (!getmovie(Integer.valueOf(json.get("movieid").toString())).equals("")) {
@@ -107,11 +134,10 @@ public class MovieEntity {
             sql.Stetmnt = sql.Conection.createStatement();
 
             sql.Stetmnt.executeUpdate("INSERT INTO movie (MOVIENAME,TYPE,YEAR,DESCRIPTION,MOVIEIMAGE,RATESYSTEM,API_ID,Story,"
-                    + "Direction,Acting,Motion,Music,VOTE_COUNT)VALUES ('"
+                    + "Direction,VOTE_COUNT)VALUES ('"
                     + json.get("mov_name") + "','" + json.get("type") + "','" + json.get("year") + "','" + json.get("desc") + "','"
                     + json.get("mov_img") + "','" + json.get("mov_rate") + "','" + json.get("movieid") + "','" + json.get("story")
-                    + "','" + json.get("direction") + "','" + json.get("acting")
-                    + "','" + json.get("motion") + "','" + json.get("music") + "'," + json.get("mov_vote") + ")");
+                    + "','" + json.get("direction") + "','" + json.get("mov_vote") + ")");
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -135,15 +161,16 @@ public class MovieEntity {
                 ret.put("overview", sql.ResStetmnt.getString("DESCRIPTION"));
                 ret.put("release_date", sql.ResStetmnt.getString("YEAR"));
                 ret.put("poster_path", sql.ResStetmnt.getString("MOVIEIMAGE"));
-                ret.put("id", sql.ResStetmnt.getInt("API_ID"));
+                ret.put("movieid", sql.ResStetmnt.getInt("API_ID"));
                 ret.put("vote_average", sql.ResStetmnt.getDouble("RATESYSTEM"));
                 ret.put("vote_count", sql.ResStetmnt.getInt("VOTE_COUNT"));
-                ret.put("story", sql.ResStetmnt.getString("Story"));
-                ret.put("direction", sql.ResStetmnt.getString("Direction"));
-                ret.put("acting", sql.ResStetmnt.getString("Acting"));
-                ret.put("motion", sql.ResStetmnt.getString("Motion"));
-                ret.put("music", sql.ResStetmnt.getString("Music"));
                 ret.put("mov_id", sql.ResStetmnt.getInt("MOVIE_ID"));
+                ReviewEntity re = new ReviewEntity();
+                JSONObject obj = new JSONObject();
+                obj = re.getReviewList(ret);
+
+                ret.put("story", obj.get("story"));
+                ret.put("direction", obj.get("direction"));
 
                 ret.put("status", "movie");
             } else {
@@ -156,5 +183,7 @@ public class MovieEntity {
         return ret;
 
     }
+
+    
 
 }

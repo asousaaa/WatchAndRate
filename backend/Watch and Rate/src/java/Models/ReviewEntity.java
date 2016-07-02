@@ -115,18 +115,17 @@ public class ReviewEntity {
     public JSONObject writeReview(JSONObject json) throws SQLException {
 
         JSONObject ret = new JSONObject();
-
         MovieEntity movie = new MovieEntity();
         if (movie.insertmovie(json)) {
-
             try {
 
                 sql.open();
-                
+
                 sql.Stetmnt = sql.Conection.createStatement();
-                sql.Stetmnt.executeUpdate("INSERT INTO review(TITLE,REVIEW_CONTENT ,IMAGE_REVIEW,STAR_RATE,USER_ID,MOVIE_ID,DATE,ENABLE_COMMENT) VALUES ('"
+                sql.Stetmnt.executeUpdate("INSERT INTO review(TITLE,REVIEW_CONTENT ,IMAGE_REVIEW,STAR_RATE,USER_ID,MOVIE_ID,DATE,ENABLE_COMMENT,STORY,DIRECTION, IS_NEW) VALUES ('"
                         + json.get("title") + "','" + json.get("content") + "','" + json.get("image") + "','" + json.get("rate") + "','"
-                        + json.get("userid") + "','" + json.get("movieid") + "','" + json.get("date") + "'," + json.get("enable") + ")");
+                        + json.get("userid") + "','" + json.get("movieid") + "','" + json.get("date") + "','" + json.get("enable") + "','" + json.get("story")
+                       + "','" + json.get("direction") + "' , 1)");
 
                 ret.put("status", "inserted");
 
@@ -139,18 +138,17 @@ public class ReviewEntity {
 
             ret.put("status", "error add movie to database");
         }
-
         return ret;
     }
-	
-	public JSONObject getReview(JSONObject json) {
-        
+
+    public JSONObject getReview(JSONObject json) {
+
         JSONObject ret = new JSONObject();
         try {
             sql.open();
             sql.Stetmnt = sql.Conection.createStatement();
             sql.ResStetmnt = sql.Stetmnt.executeQuery("SELECT * FROM  review where  REVIEW_ID = " + json.get("reviewid") + " ");
-            
+
             boolean flage = false;
             while (sql.ResStetmnt.next()) {
                 flage = true;
@@ -196,10 +194,31 @@ public class ReviewEntity {
         return ret;
     }
 
+    public JSONObject setRate(JSONObject json) {
+        JSONObject ret = new JSONObject();
+
+        try {
+            sql.open();
+            sql.Stetmnt = sql.Conection.createStatement();
+
+            sql.Stetmnt.executeUpdate("UPDATE review set STAR_RATE = " + json.get("rate")
+                    + " WHERE REVIEW_ID= " + json.get("reviewid") + " ");
+
+            ret.put("status", "updated");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ret.put("status", "failed");
+        }
+
+        return ret;
+    }
+
     public JSONObject getReviewList(JSONObject json) {
         JSONObject ret = new JSONObject();
         JSONArray list = new JSONArray();
-
+        double storyPositive = 0, allStory = 0;
+        double direcPositive = 0, allDirec = 0;
         try {
             sql.open();
 
@@ -214,6 +233,7 @@ public class ReviewEntity {
                 DATE = sql.ResStetmnt.getString("DATE");
                 REVIEW_CONTENT = sql.ResStetmnt.getString("REVIEW_CONTENT");
                 USER_ID = sql.ResStetmnt.getInt("USER_ID");
+                STAR_RATE = sql.ResStetmnt.getFloat("STAR_RATE");
 
                 UserEntity user = new UserEntity();
                 String user_name = user.getUsername(USER_ID);
@@ -222,8 +242,16 @@ public class ReviewEntity {
                 MovieEntity moiveEntity = new MovieEntity();
 
                 String mov_name = moiveEntity.getmovie(mov_id);
-
+                if (sql.ResStetmnt.getInt("Story") == 1) {
+                    storyPositive++;
+                }
+                if (sql.ResStetmnt.getInt("Direction") == 1) {
+                    direcPositive++;
+                }
+                allDirec++;
+                allStory++;
                 review.put("content", REVIEW_CONTENT);
+                review.put("starrate", STAR_RATE);
                 review.put("mov_name", mov_name);
                 review.put("date", DATE);
                 review.put("userid", USER_ID);
@@ -234,6 +262,10 @@ public class ReviewEntity {
                 list.add(review);
 
             }
+            double storyRes = (storyPositive/allStory) * 100;
+            double direcRes = (direcPositive/allDirec) * 100;
+            ret.put("story", storyRes);
+            ret.put("direction", direcRes);
             ret.put("status", "reviewlist");
 
         } catch (SQLException ex) {
@@ -245,8 +277,8 @@ public class ReviewEntity {
         return ret;
 
     }
-    
-     public JSONObject getLastestReviewslist() {
+
+    public JSONObject getLastestReviewslist() {
         JSONObject ret = new JSONObject();
         JSONArray list = new JSONArray();
 
@@ -310,7 +342,7 @@ public class ReviewEntity {
                 DATE = sql.ResStetmnt.getString("DATE");
                 REVIEW_CONTENT = sql.ResStetmnt.getString("REVIEW_CONTENT");
                 STAR_RATE = sql.ResStetmnt.getFloat("STAR_RATE");
-                ENABLE_COMMENT =  sql.ResStetmnt.getInt("ENABLE_COMMENT");
+                ENABLE_COMMENT = sql.ResStetmnt.getInt("ENABLE_COMMENT");
                 IMAGE_REVIEW = sql.ResStetmnt.getString("IMAGE_REVIEW");
                 USER_ID = sql.ResStetmnt.getInt("USER_ID");
 
@@ -344,4 +376,5 @@ public class ReviewEntity {
         return ret;
     }
 
+  
 }
