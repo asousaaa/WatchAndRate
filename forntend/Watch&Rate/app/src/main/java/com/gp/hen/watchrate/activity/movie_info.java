@@ -161,6 +161,19 @@ public class movie_info extends Activity {
                 }
             }
         });
+		
+		    rateButton.setClickable(true);
+        rateButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Connect conn = new Connect();
+                JSONObject obj = new JSONObject();
+                obj.put("movieid", json.get("id").toString());
+                conn.data = "data=" + obj.toString();
+                conn.execute(Url + "/calculateRate");
+                prgDialog.show();
+            }
+        });
 
     }
 
@@ -197,7 +210,21 @@ public class movie_info extends Activity {
                         Toast.makeText(getApplicationContext(), "You don't have any reviews yet, please write some reviews", Toast.LENGTH_SHORT).show();
 
                     }
-                } else
+                }
+				else if (object.get("status").toString().equals("rated")) {
+
+                    double rate = Double.parseDouble(object.get("rate").toString());
+                    double movie_id = Double.parseDouble(object.get("movieid").toString());
+                    DecimalFormat format = new DecimalFormat("#0.0");
+                    rate = Double.parseDouble(format.format(rate));
+                    Intent intent = new Intent(movie_info.this, movie_rate.class);
+
+                    intent.putExtra("movieid", movie_id);
+                    intent.putExtra("rate",rate);
+
+                    startActivity(intent);
+                }			
+				else
                     Toast.makeText(getApplicationContext(), object.get("status").toString(), Toast.LENGTH_SHORT).show();
                 prgDialog.dismiss();
             } catch (ParseException e) {
