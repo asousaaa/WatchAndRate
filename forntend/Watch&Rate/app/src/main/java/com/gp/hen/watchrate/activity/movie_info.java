@@ -41,6 +41,7 @@ public class movie_info extends Activity {
     LinearLayout list_View;
     ProgressDialog prgDialog;
     String Url;
+	TextView  story , direction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,8 @@ public class movie_info extends Activity {
         ImageView movieImage = (ImageView) findViewById(R.id.movie_img);
         Button reviewsButton = (Button) findViewById(R.id.Reviews_btn);
 
+		 story = (TextView) findViewById(R.id.StoryP);
+        direction = (TextView) findViewById(R.id.DirectionP);
 
         Intent intent = getIntent();
         String s = intent.getStringExtra("movie");
@@ -114,6 +117,11 @@ public class movie_info extends Activity {
         try {
             System.out.println("entered ");
             json = (JSONObject) parser.parse(s);
+			Connect conn = new Connect();
+            JSONObject jobj = new JSONObject();
+            jobj.put("movieid", json.get("id").toString());
+            conn.data = "data=" + jobj.toString();
+            conn.execute(Url + "/Get_Info");
             movieTitle.setText("Title : " + json.get("original_title").toString());
             movieYear.setText("Year : " + json.get("release_date").toString());
             movieVoteCount.setText("vote : " + json.get("vote_count").toString());
@@ -223,7 +231,14 @@ public class movie_info extends Activity {
                     intent.putExtra("rate",rate);
 
                     startActivity(intent);
-                }			
+                }
+				else if (object.get("status").toString().equals("movie")) {
+
+
+                    story.setText( object.get("story").toString()+"%");
+                    direction.setText( object.get("direction").toString()+"%");
+
+                }				
 				else
                     Toast.makeText(getApplicationContext(), object.get("status").toString(), Toast.LENGTH_SHORT).show();
                 prgDialog.dismiss();
